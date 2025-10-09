@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResumeBuilder - AI Resume Creator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 7rem;
+      background-color: white;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #0056b3;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .hero .buttons a {
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background-color: #0056b3;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .features {
+      padding: 3rem 2rem;
+      background-color: #f0f4f8;
+      text-align: center;
+    }
+
+    .features h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .features p.subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: #666;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .feature {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 300px;
+      text-align: left;
+    }
+
+    .feature h3 {
+      color: #0056b3;
+      margin-bottom: 0.5rem;
+    }
+
+    .cta {
+      background-color: #0056b3;
+      color: white;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .cta h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .cta a {
+      background-color: white;
+      color: #0056b3;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 2rem;
+    }
+
+    .footer-columns {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-column {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-column h4 {
+      margin-bottom: 0.5rem;
+      color: #f0f0f0;
+    }
+
+    .footer-column p,
+    .footer-column a {
+      font-size: 0.95rem;
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Build Your Perfect Resume with AI Assistance</h1>
+    <p>Create professional, ATS-friendly resumes in minutes. Choose from modern templates, get AI-powered suggestions, and land your dream job.</p>
+    <div class="buttons">
+      <a href="signup.html" class="btn-primary">Get Started Free</a>
+      <a href="template.html" class="btn-secondary">View Templates</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Why Choose Our Resume Builder?</h2>
+    <p class="subtitle">Everything you need to create a standout resume.</p>
+    <div class="feature-list">
+      <div class="feature">
+        <h3>AI-Powered</h3>
+        <p>Get intelligent suggestions to improve formatting and content instantly.</p>
+      </div>
+      <div class="feature">
+        <h3>ATS-Friendly</h3>
+        <p>Create resumes optimized to pass Applicant Tracking Systems used by employers.</p>
+      </div>
+      <div class="feature">
+        <h3>Professional Templates</h3>
+        <p>Choose from dozens of professionally designed resume templates.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Ready to Build Your Resume?</h2>
+    <p>Join thousands of job seekers who have landed their dream jobs using ResumeBuilder.</p>
+    <a href="#">Start Building Now</a>
+  </section>
+
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>ResumeBuilder</h4>
+        <p>Professional resumes with AI-powered assistance, templates, and expert advice.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Product</h4>
+        <a href="#">Templates</a>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+      </div>
+      <div class="footer-column">
+        <h4>Support</h4>
+        <a href="#">Help Centre</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2018 ResumeBuilder. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>

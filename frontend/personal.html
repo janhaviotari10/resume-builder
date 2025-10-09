@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step 1 - Personal Information</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #0056b3;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .progress {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      background-color: #0056b3;
+      width: 20%;
+      height: 100%;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: #0056b3;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    form input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .nav-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .nav-buttons a {
+      background-color: #0056b3;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <div class="progress">Step 1 of 5 — 20% Complete</div>
+    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+    <h2>Personal Information</h2>
+    <form>
+      <label for="fname">First Name</label>
+      <input type="text" id="fname" name="fname" />
+
+      <label for="lname">Last Name</label>
+      <input type="text" id="lname" name="lname" />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" />
+
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" />
+
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" />
+
+      <label for="state">State</label>
+      <input type="text" id="state" name="state" />
+
+      <label for="city">City</label>
+      <input type="text" id="city" name="city" />
+
+      <label for="zip">Zip</label>
+      <input type="text" id="zip" name="zip" />
+
+      <label for="linkedin">LinkedIn Profile</label>
+      <input type="url" id="linkedin" name="linkedin" />
+
+      <label for="portfolio">Website/Portfolio</label>
+      <input type="url" id="portfolio" name="portfolio" />
+    </form>
+
+    <div class="nav-buttons">
+      <a href="summary.html">Next</a>
+    </div>
+  </div>
+</body>
+</html>

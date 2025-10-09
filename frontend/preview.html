@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Preview</title>
+
+  {% if resume and resume[7] == 'modern' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern.css') }}">
+  {% elif resume and resume[7] == 'classic' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='classic.css') }}">
+  {% elif resume and resume[7] == 'clean' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='clean.css') }}">
+  {% elif resume and resume[7] == 'elegant' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='elegant.css') }}">
+  {% elif resume and resume[7] == 'bold' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='bold.css') }}">
+  {% elif resume and resume[7] == 'minimal' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='minimal.css') }}">
+  {% endif %}
+
+  <style>
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .thumbnail-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .thumbnail {
+      width: 100px;
+      height: 140px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .thumbnail:hover {
+      transform: scale(1.05);
+      border-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/template.html">Templates</a>
+      <a href="/login.html">Logout</a>
+    </nav>
+  </header>
+
+  {% if resume %}
+    <div class="thumbnail-bar">
+      {% for template in ['modern', 'classic', 'clean', 'elegant', 'bold', 'minimal'] %}
+        <img src="{{ url_for('static', filename=template + '-preview.jpg') }}" alt="{{ template }} preview" class="thumbnail">
+      {% endfor %}
+    </div>
+
+    <div class="resume-container">
+      <h1>{{ resume[1] }}</h1>
+      <p><strong>Email:</strong> {{ resume[2] }}</p>
+
+      <section>
+        <h2>Summary</h2>
+        <p>{{ resume[3] }}</p>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        <p>{{ resume[4] }}</p>
+      </section>
+
+      <section>
+        <h2>Education</h2>
+        <p>{{ resume[5] }}</p>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <p>{{ resume[6] }}</p>
+      </section>
+
+      <section>
+        <h2>Template</h2>
+        <p>{{ resume[7] }}</p>
+      </section>
+
+      <button onclick="window.print()" class="download-btn">Download as PDF</button>
+    </div>
+  {% else %}
+    <p>No resume data found. Please complete your resume first.</p>
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - ResumeBuilder</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      overflow-y: auto;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    header .signup-btn {
+      background-color: white;
+      color: #0056b3;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+
+    .dashboard {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .dashboard h2 {
+      color: #0056b3;
+      margin-bottom: 1rem;
+    }
+
+    .metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric {
+      flex: 1;
+      min-width: 200px;
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .metric h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .metric p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+      color: #0056b3;
+    }
+
+    .actions {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .actions button {
+      background-color: #0056b3;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .resume-list {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .resume-item {
+      border-bottom: 1px solid #eee;
+      padding: 1rem 0;
+    }
+
+    .resume-item:last-child {
+      border-bottom: none;
+    }
+
+    .resume-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .resume-details {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .resume-actions button {
+      background-color: #e0e0e0;
+      color: #333;
+      padding: 0.4rem 0.8rem;
+      margin-right: 0.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .btn {
+        background-color: #0056b3;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .quick-tips {
+      background-color: #fffbe6;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .quick-tips h3 {
+      margin-bottom: 1rem;
+      color: #b38f00;
+    }
+
+    .quick-tips ul {
+      padding-left: 1.2rem;
+    }
+
+    .quick-tips li {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-columns {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-column {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-column h4 {
+      margin-bottom: 0.5rem;
+      color: #f0f0f0;
+    }
+
+    .footer-column p,
+    .footer-column a {
+      font-size: 0.95rem;
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/login.html">Login</a>
+      <a href="/signup.html" class="signup-btn">Sign Up</a>
+    </nav>
+  </header>
+
+  {% if session['resume_email'] %}
+    <p>Welcome, {{ session['resume_email'] }}</p>
+  {% else %}
+    <p>Welcome!</p>
+  {% endif %}
+
+  <div class="dashboard">
+    <h2>My Dashboard</h2>
+
+    <div class="metrics">
+      <div class="metric">
+        <h3>Total Resumes</h3>
+        <p>3</p>
+      </div>
+      <div class="metric">
+        <h3>Completed</h3>
+        <p>2</p>
+      </div>
+      <div class="metric">
+        <h3>In Progress</h3>
+        <p>1</p>
+      </div>
+      <div class="metric">
+        <h3>Templates Used</h3>
+        <p>3</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="/personal.html" class="btn">Create New Resume</a>
+      <a href="/template.html" class="btn">Browse Templates</a>
+    </div>
+
+    <div class="resume-list">
+      <div class="resume-item">
+        <div class="resume-title">Software Engineer Resume</div>
+        <div class="resume-details">Template: Modern | Last modified: 2 weeks ago | Status: Complete</div>
+        <div class="resume-actions">
+          <button>Edit</button>
+          <button>View</button>
+          <button>Delete</button>
+        </div>
+      </div>
+      <div class="resume-item">
+        <div class="resume-title">Marketing Manager Resume</div>
+        <div class="resume-details">Template: Classic | Last modified: 1 week ago | Status: Draft</div>
+        <div class="resume-actions">
+          <button>Edit</button>
+          <button>View</button>
+          <button>Delete</button>
+        </div>
+      </div>
+      <div class="resume-item">
+        <div class="resume-title">Data Analyst Resume</div>
+        <div class="resume-details">Template: Clean | Last modified: 2 weeks ago | Status: Complete</div>
+        <div class="resume-actions">
+          <button>Edit</button>
+          <button>View</button>
+          <button>Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-tips">
+      <h3>Quick Tips</h3>
+      <ul>
+        <li>Use a professional template</li>
+        <li>Add achievements and quantify your impact</li>
+        <li>Keep your resume to 1–2 pages maximum</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>ResumeBuilder</h4>
+        <p>Create professional resumes with AI-powered assistance. Stand out from the crowd with our modern templates and smart suggestions.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Product</h4>
+        <a href="/template.html">Templates</a>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+      </div>
+      <div class="footer-column">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 ResumeBuilder. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>

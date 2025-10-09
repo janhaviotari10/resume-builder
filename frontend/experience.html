@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step 3 - Work Experience</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #0056b3;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .progress {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      background-color: #0056b3;
+      width: 60%;
+      height: 100%;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: #0056b3;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+
+    form textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .checkbox {
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .checkbox input {
+      margin-right: 0.5rem;
+    }
+
+    .add-btn {
+      margin-top: 1.5rem;
+      background-color: #0056b3;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .nav-buttons a {
+      background-color: #0056b3;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <div class="progress">Step 3 of 5 — 60% Complete</div>
+    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+    <h2>Work Experience</h2>
+    <form>
+      <label for="title">Job Title</label>
+      <input type="text" id="title" name="title" />
+
+      <label for="company">Company</label>
+      <input type="text" id="company" name="company" />
+
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" />
+
+      <label for="start">Start Date</label>
+      <input type="date" id="start" name="start" />
+
+      <label for="end">End Date</label>
+      <input type="date" id="end" name="end" />
+
+      <div class="checkbox">
+        <input type="checkbox" id="current" name="current" />
+        <label for="current">I currently work here</label>
+      </div>
+
+      <label for="description">Job Description</label>
+      <textarea id="description" placeholder="Describe your responsibilities and achievements..."></textarea>
+
+      <button type="button" class="add-btn">Add Experience</button>
+    </form>
+
+    <div class="nav-buttons">
+      <a href="summary.html">Previous</a>
+      <a href="education.html">Next</a>
+    </div>
+  </div>
+</body>
+</html>

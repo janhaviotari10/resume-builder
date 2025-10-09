@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step 2 - Professional Summary</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #0056b3;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .progress {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      background-color: #0056b3;
+      width: 40%;
+      height: 100%;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: #0056b3;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .tip {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    .nav-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .nav-buttons a {
+      background-color: #0056b3;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <div class="progress">Step 2 of 5 — 40% Complete</div>
+    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+    <h2>Professional Summary</h2>
+    <label for="summary">Write a brief summary of your professional background, key skills, and career objectives:</label>
+    <textarea id="summary" placeholder="Write a brief summary of your professional background, key skills, and career objectives..."></textarea>
+    <div class="tip">Tip: Keep it concise (3–5 sentences) and highlight your most relevant qualifications.</div>
+
+    <div class="nav-buttons">
+      <a href="personal.html">Previous</a>
+      <a href="experience.html">Next</a>
+    </div>
+  </div>
+</body>
+</html>

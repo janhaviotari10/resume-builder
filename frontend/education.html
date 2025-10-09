@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step 4 - Education</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #0056b3;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .progress {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      background-color: #0056b3;
+      width: 80%;
+      height: 100%;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: #0056b3;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    form input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .add-btn {
+      margin-top: 1.5rem;
+      background-color: #0056b3;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .nav-buttons a {
+      background-color: #0056b3;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <div class="progress">Step 4 of 5 — 80% Complete</div>
+    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+    <h2>Education</h2>
+    <form>
+      <label for="degree">Degree</label>
+      <input type="text" id="degree" name="degree" placeholder="e.g., Bachelor of Science in Computer Science" />
+
+      <label for="school">School/University</label>
+      <input type="text" id="school" name="school" />
+
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" />
+
+      <label for="grad-date">Graduation Date</label>
+      <input type="date" id="grad-date" name="grad-date" />
+
+      <label for="gpa">GPA (Optional)</label>
+      <input type="text" id="gpa" name="gpa" />
+      
+      <button type="button" class="add-btn">Add Education</button>
+    </form>
+
+    <div class="nav-buttons">
+      <a href="experience.html">Previous</a>
+      <a href="skills.html">Next</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choose a Resume Template</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      color: #0056b3;
+      margin-bottom: 2rem;
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .template-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .template-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .template-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 5px;
+      background-color: #e0e0e0;
+    }
+
+    .template-card h3 {
+      margin: 1rem 0 0.5rem;
+      color: #0056b3;
+    }
+
+    .template-card form {
+      margin-top: 1rem;
+    }
+
+    .template-card button {
+      background-color: #0056b3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-columns {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-column {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-column h4 {
+      margin-bottom: 0.5rem;
+      color: #f0f0f0;
+    }
+
+    .footer-column p,
+    .footer-column a {
+      font-size: 0.95rem;
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>ResumeBuilder</strong></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Choose a Resume Template</h2>
+    <div class="template-grid">
+      {% for template in ['modern', 'classic', 'clean', 'elegant', 'bold', 'minimal'] %}
+      <div class="template-card">
+        <img src="{{ url_for('static', filename=template + '_preview.jpg') }}" alt="{{ template.capitalize() }} Template Preview" />
+        <h3>{{ template.capitalize() }}</h3>
+        <form action="/template.html" method="post">
+          <input type="hidden" name="template" value="{{ template }}" />
+          <button type="submit">Use Template</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>ResumeBuilder</h4>
+        <p>Create professional resumes with AI-powered assistance. Stand out from the crowd with our modern templates and smart suggestions.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Product</h4>
+        <a href="template.html">Templates</a>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+      </div>
+      <div class="footer-column">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 ResumeBuilder. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
