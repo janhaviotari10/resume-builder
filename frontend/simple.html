@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Resume Template</title>
+  <!-- Add html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body { 
+      font-family: "Segoe UI", sans-serif; 
+      background: #f7f7f7; 
+      margin: 0; 
+      padding: 0; 
+    }
+    .container { 
+      max-width: 900px; 
+      margin: 40px auto; 
+      background: #fff; 
+      padding: 40px; 
+      border-radius: 12px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+    }
+    header { 
+      text-align: center; 
+      border-bottom: 2px solid #eee; 
+      padding-bottom: 20px; 
+      margin-bottom: 25px; 
+    }
+    header h1 { 
+      margin: 0; 
+      font-size: 28px; 
+      color: #2b2b2b; 
+    }
+    header p { 
+      margin: 5px 0; 
+      font-size: 14px; 
+      color: #666; 
+    }
+    section { 
+      margin-bottom: 25px; 
+    }
+    section h2 { 
+      border-bottom: 2px solid #ddd; 
+      padding-bottom: 6px; 
+      margin-bottom: 12px; 
+      font-size: 20px; 
+      color: #333; 
+    }
+    ul { 
+      list-style: disc; 
+      padding-left: 20px; 
+      margin: 0; 
+    }
+    ul li { 
+      margin-bottom: 6px; 
+    }
+
+    /* Download button styling */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+      transition: background 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .download-btn:hover {
+      background: #34495e;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Print styles for better PDF output */
+    @media print {
+      .download-btn {
+        display: none;
+      }
+      body {
+        background: white !important;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        box-shadow: none !important;
+        margin: 0 !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        padding: 20px !important;
+      }
+    }
+    
+    /* Loading indicator for PDF generation */
+    .pdf-loading {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .pdf-loading.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <!-- Download Button -->
+  <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
+  
+  <!-- PDF Loading Indicator -->
+  <div class="pdf-loading" id="pdfLoading">
+    <div>Generating PDF... Please wait</div>
+  </div>
+
+  <div class="container" id="resume-content">
+    <!-- Header -->
+    <header>
+      <h1 id="fullname">Jane Smith</h1>
+      <p id="jobTitle">Full Stack Developer</p>
+      <p>Email: <span id="email">jane@example.com</span> | Phone: <span id="mobile">+91 9876543210</span></p>
+      <p>Location: <span id="address">Mumbai, India</span></p>
+      <p>LinkedIn: <span id="linkedin">linkedin.com/in/janesmith</span> | GitHub: <span id="github">github.com/janesmith</span></p>
+    </header>
+
+    <!-- Summary -->
+    <section>
+      <h2>Summary</h2>
+      <p id="summary">Enthusiastic developer with 4+ years of experience creating scalable web applications and innovative solutions.</p>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <h2>Skills</h2>
+      <ul id="skillsList">
+        <li>HTML5 / CSS3</li>
+        <li>JavaScript (ES6+)</li>
+        <li>Node.js</li>
+      </ul>
+    </section>
+
+    <!-- Work Experience -->
+    <section>
+      <h2>Work Experience</h2>
+      <ul id="experienceList">
+        <li><strong>TechWave Pvt Ltd</strong> – Backend Developer (2020–Present)</li>
+        <li><strong>CodeCrafters</strong> – Junior Developer (2018–2020)</li>
+      </ul>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <h2>Education</h2>
+      <ul id="educationList">
+        <li><strong>B.E. in Computer Engineering</strong> – Mumbai University (2014–2018)</li>
+        <li><strong>HSC (Science)</strong> – Maharashtra Board (2012–2014)</li>
+      </ul>
+    </section>
+
+    <!-- Projects -->
+    <section>
+      <h2>Projects</h2>
+      <ul id="projectsList">
+        <li><strong>EduMentor AI</strong>: AI-powered college learning platform. <em>Technologies:</em> React, Node.js</li>
+        <li><strong>Attendance Tracker</strong>: Android app for attendance automation. <em>Technologies:</em> Java, Firebase</li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    // --- Utility Function ---
+    function isNotEmpty(value) {
+        return value !== null && value !== undefined && String(value).trim() !== '';
+    }
+
+    // --- Main Data Loading Function ---
+    function loadResumeData() {
+        const savedData = JSON.parse(localStorage.getItem("resumeData")) || {};
+
+        if (savedData) {
+            // Direct fields
+            const fields = {
+                'fullname': 'fname lname',
+                'email': 'email',
+                'mobile': 'phone',
+                'address': 'address',
+                'linkedin': 'linkedin',
+                'github': 'github',
+                'summary': 'summary',
+                'jobTitle': 'title'
+            };
+
+            Object.keys(fields).forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    if (field === 'fullname') {
+                        const fname = savedData.fname || '';
+                        const lname = savedData.lname || '';
+                        element.textContent = `${fname} ${lname}`.trim() || 'Your Full Name';
+                    } else if (field === 'jobTitle') {
+                        element.textContent = savedData.title || 'Job Title / Professional';
+                    } else {
+                        element.textContent = savedData[fields[field]] || element.textContent;
+                    }
+                }
+            });
+
+            // Skills
+            if (savedData.skills) {
+                const skillsList = document.getElementById("skillsList");
+                skillsList.innerHTML = "";
+                const skillsArr = savedData.skills.split(/[,;\n]/).map(s => s.trim()).filter(isNotEmpty);
+                
+                if (skillsArr.length > 0) {
+                    skillsArr.forEach(skill => {
+                        const li = document.createElement("li");
+                        li.textContent = skill;
+                        skillsList.appendChild(li);
+                    });
+                } else {
+                    skillsList.innerHTML = "<li>No skills added yet</li>";
+                }
+            }
+
+            // Work Experience
+            const expList = document.getElementById("experienceList");
+            expList.innerHTML = "";
+
+            if (savedData.experiences && Array.isArray(savedData.experiences)) {
+                if (savedData.experiences.length > 0) {
+                    savedData.experiences.forEach(exp => {
+                        const li = document.createElement("li");
+                        const endDate = exp.current === true ? 'Present' : (exp.end || '');
+                        li.innerHTML = `<strong>${exp.company || 'Company Name'}</strong> – ${exp.title || 'Job Title'} (${exp.start || 'Start Date'} – ${endDate})`;
+                        expList.appendChild(li);
+                    });
+                } else {
+                    expList.innerHTML = "<li>No work experience added yet</li>";
+                }
+            } else if (savedData.company) {
+                const companies = Array.isArray(savedData.company) ? savedData.company : [savedData.company];
+                const roles = Array.isArray(savedData.role) ? savedData.role : [savedData.role];
+                const startDates = Array.isArray(savedData.startDate) ? savedData.startDate : [savedData.startDate];
+                const endDates = Array.isArray(savedData.endDate) ? savedData.endDate : [savedData.endDate];
+                
+                companies.forEach((c, i) => {
+                    if (c) {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<strong>${c}</strong> – ${roles[i] || ""} (${startDates[i] || ""} – ${endDates[i] || "Present"})`;
+                        expList.appendChild(li);
+                    }
+                });
+                
+                if (companies.length === 0) {
+                    expList.innerHTML = "<li>No work experience added yet</li>";
+                }
+            } else {
+                expList.innerHTML = "<li>No work experience added yet</li>";
+            }
+
+            // Education
+            const eduList = document.getElementById("educationList");
+            eduList.innerHTML = "";
+
+            if (savedData.educations && Array.isArray(savedData.educations)) {
+                if (savedData.educations.length > 0) {
+                    savedData.educations.forEach(edu => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<strong>${edu.degree || 'Degree Name'}</strong> – ${edu.school || 'School Name'} (${edu['grad-date'] || 'Graduation Year'})`;
+                        eduList.appendChild(li);
+                    });
+                } else {
+                    eduList.innerHTML = "<li>No education added yet</li>";
+                }
+            } else if (savedData.degree) {
+                const degrees = Array.isArray(savedData.degree) ? savedData.degree : [savedData.degree];
+                const schools = Array.isArray(savedData.school) ? savedData.school : [savedData.school];
+                const years = Array.isArray(savedData.year) ? savedData.year : [savedData.year];
+                
+                degrees.forEach((deg, i) => {
+                    if (deg) {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<strong>${deg}</strong> – ${schools[i] || ""} (${years[i] || ""})`;
+                        eduList.appendChild(li);
+                    }
+                });
+                
+                if (degrees.length === 0) {
+                    eduList.innerHTML = "<li>No education added yet</li>";
+                }
+            } else {
+                eduList.innerHTML = "<li>No education added yet</li>";
+            }
+
+            // Projects
+            const projList = document.getElementById("projectsList");
+            projList.innerHTML = "";
+
+            if (savedData.projects && Array.isArray(savedData.projects)) {
+                if (savedData.projects.length > 0) {
+                    savedData.projects.forEach(project => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<strong>${project.name || 'Project Name'}</strong>: ${project.description || 'Project description'} <br><em>Technologies:</em> ${project.technologies || 'Not specified'}`;
+                        projList.appendChild(li);
+                    });
+                } else {
+                    projList.innerHTML = "<li>No projects added yet</li>";
+                }
+            } else if (savedData.projectName) {
+                const names = Array.isArray(savedData.projectName) ? savedData.projectName : [savedData.projectName];
+                const descs = Array.isArray(savedData.projectDesc) ? savedData.projectDesc : [savedData.projectDesc];
+                const techs = Array.isArray(savedData.projectTech) ? savedData.projectTech : [savedData.projectTech];
+                
+                names.forEach((n, i) => {
+                    if (n) {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<strong>${n}</strong>: ${descs[i] || ""} <br><em>Technologies:</em> ${techs[i] || ""}`;
+                        projList.appendChild(li);
+                    }
+                });
+                
+                if (names.length === 0) {
+                    projList.innerHTML = "<li>No projects added yet</li>";
+                }
+            } else {
+                projList.innerHTML = "<li>No projects added yet</li>";
+            }
+        }
+    }
+
+    // --- PDF Download Function ---
+    function downloadPDF() {
+      const element = document.getElementById('resume-content');
+      const loadingIndicator = document.getElementById('pdfLoading');
+      
+      // Show loading indicator
+      loadingIndicator.classList.add('show');
+      
+      // Get user name for filename
+      const userName = document.getElementById('fullname').textContent || 'resume';
+      const fileName = `${userName.replace(/\s+/g, '_')}_resume.pdf`;
+      
+      // Options for PDF generation
+      const options = {
+        margin: 10,
+        filename: fileName,
+        image: { 
+          type: 'jpeg', 
+          quality: 0.98 
+        },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait' 
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'] 
+        }
+      };
+
+      // Generate and download PDF
+      html2pdf()
+        .set(options)
+        .from(element)
+        .save()
+        .then(() => {
+          // Hide loading indicator when done
+          loadingIndicator.classList.remove('show');
+        })
+        .catch((error) => {
+          console.error('PDF generation failed:', error);
+          loadingIndicator.classList.remove('show');
+          alert('Failed to generate PDF. Please try again.');
+        });
+    }
+
+    // Load data when the page is fully loaded
+    window.addEventListener('load', loadResumeData);
+  </script>
+</body>
+</html>
