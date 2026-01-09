@@ -1,157 +1,583 @@
+template 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choose a Resume Template</title>
+  <title>Choose Template - ResumeBuilder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary-blue: #0056b3;
+      --light-blue: #e6f0ff;
+      --white: #ffffff;
+      --light-gray: #f8f9fa;
+      --dark-gray: #2c3e50;
+      --medium-gray: #6c757d;
+      --border-color: #e9ecef;
+      --success-green: #28a745;
+    }
+    
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-gray);
+      color: var(--dark-gray);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header */
     header {
-      background-color: #0056b3;
-      color: white;
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
-
-    header nav a {
-      color: white;
-      margin-left: 1.5rem;
+    
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--dark-gray);
       text-decoration: none;
       font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
     }
-
-    .container {
-      max-width: 1100px;
-      margin: 2rem auto;
-      padding: 0 2rem;
+    
+    .nav-link:hover {
+      color: var(--primary-blue);
+      background: var(--light-blue);
     }
-
-    h2 {
-      text-align: center;
-      color: #0056b3;
-      margin-bottom: 2rem;
+    
+    .nav-link.active {
+      color: var(--primary-blue);
+      background: var(--light-blue);
     }
-
-    .template-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      position: relative;
     }
-
-    .template-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .template-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .template-card img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 5px;
-      background-color: #e0e0e0;
-    }
-
-    .template-card h3 {
-      margin: 1rem 0 0.5rem;
-      color: #0056b3;
-    }
-
-    .template-card form {
-      margin-top: 1rem;
-    }
-
-    .template-card button {
-      background-color: #0056b3;
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-blue);
       color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid var(--light-blue);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none; /* Hide image by default, we'll use initials */
+    }
+    
+    .user-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem;
+      min-width: 150px;
+      display: none;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+    
+    .dropdown-menu.show {
+      display: block;
+    }
+    
+    .dropdown-item {
+      padding: 0.6rem 1rem;
+      text-decoration: none;
+      color: var(--dark-gray);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .dropdown-item:hover {
+      background: var(--light-blue);
+      color: var(--primary-blue);
+    }
+    
+    .mobile-menu {
+      display: none;
+      font-size: 1.3rem;
       cursor: pointer;
     }
 
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 2rem;
-      margin-top: 4rem;
+    /* Main Container - Centered */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1rem;
+      width: 100%;
     }
-
-    .footer-columns {
+    
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      background-color: var(--white);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-color);
+      margin: 0 auto;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 0.85rem;
+    }
+    
+    .back-link:hover {
+      color: #004494;
+    }
+    
+    /* Page Header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .page-header h2 {
+      font-size: 1.8rem;
+      color: var(--primary-blue);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    
+    .page-description {
+      color: var(--medium-gray);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Template Grid - Flexbox approach for perfect centering */
+    .template-grid {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 2rem;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .template-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      width: 300px; /* Fixed width for consistent sizing */
+      flex: 0 0 auto;
+    }
+    
+    .template-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      border-color: var(--primary-blue);
+    }
+    
+    .template-preview {
+      height: 350px;
+      background: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .template-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    
+    .template-card:hover .template-preview img {
+      transform: scale(1.05);
+    }
+    
+    .template-info {
+      padding: 1.2rem;
+    }
+    
+    .template-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .template-description {
+      color: var(--medium-gray);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    
+    .template-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
       margin-bottom: 1rem;
     }
-
-    .footer-column {
-      flex: 1;
-      min-width: 200px;
+    
+    .feature-tag {
+      background: var(--light-blue);
+      color: var(--primary-blue);
+      padding: 0.3rem 0.6rem;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: 500;
     }
-
+    
+    .use-template-btn {
+      width: 100%;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    
+    .use-template-btn:hover {
+      background: #004494;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-gray);
+      color: var(--white);
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+    
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto 1.5rem;
+    }
+    
     .footer-column h4 {
-      margin-bottom: 0.5rem;
-      color: #f0f0f0;
+      color: var(--white);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
     }
-
-    .footer-column p,
-    .footer-column a {
-      font-size: 0.95rem;
+    
+    .footer-column p {
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .footer-links a {
       color: #ccc;
       text-decoration: none;
-      display: block;
-      margin-bottom: 0.3rem;
+      transition: color 0.3s ease;
+      font-size: 0.9rem;
     }
-
+    
+    .footer-links a:hover {
+      color: var(--white);
+    }
+    
     .footer-bottom {
       text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid #444;
+      color: #999;
       font-size: 0.85rem;
-      color: #aaa;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .container {
+        max-width: 95%;
+        padding: 1.2rem;
+      }
+      
+      /* Adjust card width for tablets */
+      .template-card {
+        width: 280px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8rem;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 0.8rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        gap: 0.8rem;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      /* Single column for mobile */
+      .template-card {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 0.3rem;
+      }
+      
+      .page-header h2 {
+        font-size: 1.5rem;
+      }
+      
+      .template-preview {
+        height: 300px;
+      }
+      
+      .template-card {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div><strong>ResumeBuilder</strong></div>
+    <div class="logo">ResumeBuilder</div>
     <nav>
-      <a href="/">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <div class="user-menu">
+        <div class="user-avatar" id="userAvatar">
+          <!-- Profile image is hidden by default, we'll show initials -->
+          <img src="" alt="Profile" style="display: none;">
+          <span id="userInitials">U</span>
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="profile.html" class="dropdown-item">
+            <i class="fas fa-user"></i>
+            My Profile
+          </a>
+          <a href="settings.html" class="dropdown-item">
+            <i class="fas fa-cog"></i>
+            Settings
+          </a>
+          <a href="logout.html" class="dropdown-item">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+      </div>
     </nav>
+    <div class="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
-  <div class="container">
-    <h2>Choose a Resume Template</h2>
-    <div class="template-grid">
-      {% for template in ['modern', 'classic', 'clean', 'elegant', 'bold', 'minimal'] %}
-      <div class="template-card">
-        <img src="{{ url_for('static', filename=template + '_preview.jpg') }}" alt="{{ template.capitalize() }} Template Preview" />
-        <h3>{{ template.capitalize() }}</h3>
-        <form action="/template.html" method="post">
-          <input type="hidden" name="template" value="{{ template }}" />
-          <button type="submit">Use Template</button>
-        </form>
+  <div class="main-content">
+    <div class="container">
+      <a href="project.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to projects
+      </a>
+
+      <div class="page-header">
+        <h2>Choose Your Resume Template</h2>
+        <p class="page-description">
+          Select a professional template that best showcases your skills and experience. 
+          All templates are optimized for ATS systems and designed to make you stand out.
+        </p>
       </div>
-      {% endfor %}
+
+      <div class="template-grid">
+        <!-- Modern Template -->
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="static/modern.png" alt="Modern Template Preview">
+          </div>
+          <div class="template-info">
+            <div class="template-name">
+              <i class="fas fa-rocket"></i>
+              Modern
+            </div>
+            <a href="/select_template/modern" class="use-template-btn">
+              <i class="fas fa-check"></i>
+              Use This Template
+            </a>
+          </div>
+        </div>
+
+        <!-- Simple Template -->
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="static/simple.png" alt="Simple Template Preview">
+          </div>
+          <div class="template-info">
+            <div class="template-name">
+              <i class="fas fa-stream"></i>
+              Simple
+            </div>
+            <a href="/select_template/simple" class="use-template-btn">
+              <i class="fas fa-check"></i>
+              Use This Template
+            </a>
+          </div>
+        </div>
+
+        <!-- Professional Template -->
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="static/professional.png" alt="Professional Template Preview">
+          </div>
+          <div class="template-info">
+            <div class="template-name">
+              <i class="fas fa-briefcase"></i>
+              Professional
+            </div>
+            <a href="/select_template/professional" class="use-template-btn">
+              <i class="fas fa-check"></i>
+              Use This Template
+            </a>
+          </div>
+        </div>
+
+        <!-- Classic Template -->
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="static/classic.png" alt="Classic Template Preview">
+          </div>
+          <div class="template-info">
+            <div class="template-name">
+              <i class="fas fa-gem"></i>
+              Classic
+            </div>
+            <a href="/select_template/classic" class="use-template-btn">
+              <i class="fas fa-check"></i>
+              Use This Template
+            </a>
+          </div>
+        </div>
+
+        <!-- Clean Template -->
+        <div class="template-card">
+          <div class="template-preview">
+            <img src="static/clean.png" alt="Clean Template Preview">
+          </div>
+          <div class="template-info">
+            <div class="template-name">
+              <i class="fas fa-broom"></i>
+              Clean
+            </div>
+            <a href="/select_template/clean" class="use-template-btn">
+              <i class="fas fa-check"></i>
+              Use This Template
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -163,20 +589,81 @@
       </div>
       <div class="footer-column">
         <h4>Product</h4>
-        <a href="template.html">Templates</a>
-        <a href="#">Features</a>
-        <a href="#">Pricing</a>
+        <div class="footer-links">
+          <a href="template.html">Templates</a>
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+        </div>
       </div>
       <div class="footer-column">
         <h4>Support</h4>
-        <a href="#">Help Center</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Privacy Policy</a>
+        <div class="footer-links">
+          <a href="#">Help Center</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Privacy Policy</a>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
       &copy; 2025 ResumeBuilder. All rights reserved.
     </div>
   </footer>
+
+  <script>
+    const userAvatar = document.getElementById('userAvatar');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const userInitials = document.getElementById('userInitials');
+
+    // --- FUNCTION 1: UPDATE USER AVATAR ---
+    function updateUserAvatar() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        const firstName = storedData.fname || '';
+        const lastName = storedData.lname || '';
+        
+        let initials = 'U'; // Default to 'U' for User
+        
+        if (firstName && lastName) {
+            initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        } else if (firstName) {
+            initials = firstName.charAt(0).toUpperCase();
+        } else if (lastName) {
+            initials = lastName.charAt(0).toUpperCase();
+        }
+        
+        userInitials.textContent = initials;
+    }
+
+    // --- ATTACH LISTENERS ---
+    
+    // 1. Load data when the page loads
+    window.addEventListener('load', updateUserAvatar);
+
+    // 2. Mobile menu toggle
+    document.querySelector('.mobile-menu').addEventListener('click', function() {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+        dropdownMenu.classList.remove('show');
+      } else {
+        nav.style.display = 'flex';
+      }
+    });
+
+    // 3. User avatar dropdown toggle
+    userAvatar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // 4. Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.classList.remove('show');
+    });
+
+    // 5. Prevent dropdown from closing when clicking inside it
+    dropdownMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  </script>
 </body>
 </html>
