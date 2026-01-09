@@ -3,154 +3,755 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 1 - Personal Information</title>
+  <title>Personal Information - ResumeBuilder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary-blue: #0056b3;
+      --light-blue: #e6f0ff;
+      --white: #ffffff;
+      --light-gray: #f8f9fa;
+      --dark-gray: #2c3e50;
+      --medium-gray: #6c757d;
+      --border-color: #e9ecef;
+      --error-red: #dc3545;
+    }
+    
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-gray);
+      color: var(--dark-gray);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header */
     header {
-      background-color: #0056b3;
-      color: white;
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
-
-    header nav a {
-      color: white;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      color: #0056b3;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-
-    .progress {
+    
+    .logo {
+      font-size: 1.3rem;
       font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .progress-bar {
-      background-color: #e0e0e0;
-      border-radius: 5px;
-      overflow: hidden;
-      height: 10px;
-      margin-bottom: 1.5rem;
-    }
-
-    .progress-bar-fill {
-      background-color: #0056b3;
-      width: 20%;
-      height: 100%;
-    }
-
-    h2 {
-      margin-bottom: 1rem;
-      color: #0056b3;
-    }
-
-    form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 500;
-    }
-
-    form input {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .nav-buttons {
-      margin-top: 2rem;
+      color: var(--primary-blue);
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--dark-gray);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary-blue);
+      background: var(--light-blue);
+    }
+    
+    .nav-link.active {
+      color: var(--primary-blue);
+      background: var(--light-blue);
+    }
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      position: relative;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid var(--light-blue);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none; /* Hide image by default, we'll use initials */
+    }
+    
+    .user-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem;
+      min-width: 150px;
+      display: none;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+    
+    .dropdown-menu.show {
+      display: block;
+    }
+    
+    .dropdown-item {
+      padding: 0.6rem 1rem;
+      text-decoration: none;
+      color: var(--dark-gray);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .dropdown-item:hover {
+      background: var(--light-blue);
+      color: var(--primary-blue);
+    }
+    
+    .mobile-menu {
+      display: none;
+      font-size: 1.3rem;
+      cursor: pointer;
     }
 
-    .nav-buttons a {
-      background-color: #0056b3;
-      color: white;
-      padding: 0.6rem 1.2rem;
+    /* Main Container - Centered */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1rem;
+      width: 100%;
+    }
+    
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      background-color: var(--white);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-color);
+      margin: 0 auto;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
       text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 0.85rem;
+    }
+    
+    .back-link:hover {
+      color: #004494;
+    }
+    
+    /* Progress Section - Compact */
+    .progress-section {
+      margin-bottom: 1rem;
+    }
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+    
+    .progress-text {
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.85rem;
+    }
+    
+    .progress-percentage {
+      font-weight: 700;
+      color: var(--primary-blue);
+      font-size: 0.8rem;
+    }
+    
+    .progress-bar {
+      background-color: var(--light-gray);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 5px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary-blue), #0077e6);
+      height: 100%;
+      width: 20%;
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+    
+    /* Form Section - Compact */
+    .form-section h2 {
+      font-size: 1.3rem;
+      color: var(--primary-blue);
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+    
+    .form-description {
+      color: var(--medium-gray);
+      margin-bottom: 1.2rem;
+      font-size: 0.85rem;
+    }
+    
+    /* Form Grid - Custom layout for requested fields */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    
+    .form-group {
+      margin-bottom: 0.6rem;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .form-group.half-width {
+      grid-column: span 1;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.8rem;
+    }
+    
+    .required::after {
+      content: " *";
+      color: var(--error-red);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      border: 1.5px solid var(--border-color);
       border-radius: 5px;
-      font-weight: bold;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      background-color: var(--white);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.1);
+    }
+    
+    .form-control.error {
+      border-color: var(--error-red);
+      box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+    }
+    
+    .error-message {
+      color: var(--error-red);
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    .form-hint {
+      font-size: 0.7rem;
+      color: var(--medium-gray);
+      margin-top: 0.2rem;
+    }
+    
+    /* Navigation Buttons - Compact */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .btn {
+      padding: 0.6rem 1rem;
+      border-radius: 5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(0, 86, 179, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background-color: #004494;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.4);
+    }
+    
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary-blue);
+      border: 1.5px solid var(--primary-blue);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--light-blue);
+      transform: translateY(-1px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .container {
+        max-width: 95%;
+        padding: 1.2rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8rem;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 0.8rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        gap: 0.8rem;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .nav-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 0.3rem;
+      }
+      
+      .progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+      }
+      
+      .form-section h2 {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div><strong>ResumeBuilder</strong></div>
+    <div class="logo">ResumeBuilder</div>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <div class="user-menu">
+        <div class="user-avatar" id="userAvatar">
+          <!-- Profile image is hidden by default, we'll show initials -->
+          <img src="" alt="Profile" style="display: none;">
+          <span id="userInitials">U</span>
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="profile.html" class="dropdown-item">
+            <i class="fas fa-user"></i>
+            My Profile
+          </a>
+          <a href="settings.html" class="dropdown-item">
+            <i class="fas fa-cog"></i>
+            Settings
+          </a>
+          <a href="logout.html" class="dropdown-item">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+      </div>
     </nav>
+    <div class="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
-  <div class="container">
-    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
-    <div class="progress">Step 1 of 5 — 20% Complete</div>
-    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+  <div class="main-content">
+    <div class="container">
+      <a href="dashboard.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Dashboard
+      </a>
 
-    <h2>Personal Information</h2>
-    <form>
-      <label for="fname">First Name</label>
-      <input type="text" id="fname" name="fname" />
+      <!-- Progress Section -->
+      <div class="progress-section">
+        <div class="progress-info">
+          <div class="progress-text">Step 1 of 6 - Personal Information</div>
+          <div class="progress-percentage">16% Complete</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
 
-      <label for="lname">Last Name</label>
-      <input type="text" id="lname" name="lname" />
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2>Personal Information</h2>
+        <p class="form-description">Let's start with your basic information. This will be used throughout your resume.</p>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" />
+        <form id="personalForm" >
+          <div class="form-grid">
+            <!-- Row 1: First Name | Last Name | Email Address -->
+            <div class="form-group">
+              <label for="fname" class="form-label required">First Name</label>
+              <input type="text" id="fname" name="fname" class="form-control" placeholder="Enter first name">
+              <div class="error-message" id="fname-error">Please enter your first name</div>
+            </div>
 
-      <label for="phone">Phone</label>
-      <input type="tel" id="phone" name="phone" />
+            <div class="form-group">
+              <label for="lname" class="form-label required">Last Name</label>
+              <input type="text" id="lname" name="lname" class="form-control" placeholder="Enter last name">
+              <div class="error-message" id="lname-error">Please enter your last name</div>
+            </div>
 
-      <label for="address">Address</label>
-      <input type="text" id="address" name="address" />
+            <div class="form-group">
+              <label for="email" class="form-label required">Email Address</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="your.email@example.com">
+              <div class="error-message" id="email-error">Please enter a valid email</div>
+            </div>
 
-      <label for="state">State</label>
-      <input type="text" id="state" name="state" />
+            <!-- Row 2: Phone No | City | State | Pin Code -->
+            <div class="form-group">
+              <label for="phone" class="form-label required">Phone Number</label>
+              <input type="tel" id="phone" name="phone" class="form-control" placeholder="(123) 456-7890">
+              <div class="error-message" id="phone-error">Please enter your phone</div>
+            </div>
 
-      <label for="city">City</label>
-      <input type="text" id="city" name="city" />
+            <div class="form-group">
+              <label for="city" class="form-label">City</label>
+              <input type="text" id="city" name="city" class="form-control" placeholder="Enter city">
+            </div>
 
-      <label for="zip">Zip</label>
-      <input type="text" id="zip" name="zip" />
+            <div class="form-group">
+              <label for="state" class="form-label">State</label>
+              <input type="text" id="state" name="state" class="form-control" placeholder="Enter state">
+            </div>
 
-      <label for="linkedin">LinkedIn Profile</label>
-      <input type="url" id="linkedin" name="linkedin" />
+            <!-- Row 3: Street Address | LinkedIn Profile | Website/Portfolio -->
+            <div class="form-group">
+              <label for="address" class="form-label">Street Address</label>
+              <input type="text" id="address" name="address" class="form-control" placeholder="Enter street address">
+            </div>
 
-      <label for="portfolio">Website/Portfolio</label>
-      <input type="url" id="portfolio" name="portfolio" />
-    </form>
+            <div class="form-group">
+              <label for="linkedin" class="form-label">LinkedIn Profile</label>
+              <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/yourprofile">
+              <div class="form-hint">Optional</div>
+            </div>
 
-    <div class="nav-buttons">
-      <a href="summary.html">Next</a>
+            <div class="form-group">
+              <label for="portfolio" class="form-label">Website/Portfolio</label>
+              <input type="url" id="portfolio" name="portfolio" class="form-control" placeholder="https://yourportfolio.com">
+              <div class="form-hint">Optional</div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+          <a href="dashboard.html" class="btn btn-secondary">
+            <i class="fas fa-times"></i>
+            Cancel
+          </a>
+          <button id="nextBtn" class="btn btn-primary">
+            Continue to Summary
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    const form = document.getElementById('personalForm');
+    const nextBtn = document.getElementById('nextBtn');
+    const userAvatar = document.getElementById('userAvatar');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const userInitials = document.getElementById('userInitials');
+    
+    // Required fields for validation
+    const requiredFields = ['fname', 'lname', 'email', 'phone'];
+    const fieldsToSave = ['fname', 'lname', 'email', 'phone', 'address', 'state', 'city', 'linkedin', 'portfolio'];
+
+    // --- FUNCTION 1: LOAD DATA ---
+    function loadData() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        
+        // Populate the form fields with stored data
+        fieldsToSave.forEach(key => {
+            const inputField = form.elements[key];
+            if (inputField && storedData[key]) {
+                inputField.value = storedData[key];
+            }
+        });
+        
+        // Update user avatar with initials
+        updateUserAvatar();
+    }
+
+    // --- FUNCTION 2: VALIDATE FORM ---
+    function validateForm() {
+        let isValid = true;
+        
+        // Clear previous errors
+        requiredFields.forEach(field => {
+            const errorElement = document.getElementById(`${field}-error`);
+            const inputElement = form.elements[field];
+            
+            errorElement.classList.remove('show');
+            inputElement.classList.remove('error');
+        });
+        
+        // Check required fields
+        requiredFields.forEach(field => {
+            const inputElement = form.elements[field];
+            const errorElement = document.getElementById(`${field}-error`);
+            
+            if (!inputElement.value.trim()) {
+                isValid = false;
+                inputElement.classList.add('error');
+                errorElement.classList.add('show');
+            }
+            
+            // Additional email validation
+            if (field === 'email' && inputElement.value.trim()) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(inputElement.value.trim())) {
+                    isValid = false;
+                    inputElement.classList.add('error');
+                    errorElement.textContent = 'Please enter a valid email address';
+                    errorElement.classList.add('show');
+                }
+            }
+        });
+        
+        return isValid;
+    }
+
+    // --- FUNCTION 3: SAVE DATA AND NAVIGATE ---
+    function saveDataAndNavigate(event) {
+        event.preventDefault();
+
+        // Validate form first
+        if (!validateForm()) {
+            // Scroll to first error
+            const firstError = document.querySelector('.error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        // 1. Get current data from localStorage
+        const existingData = JSON.parse(localStorage.getItem('resumeData')) || {};
+
+        // 2. Collect new data from the form fields
+        const newData = {};
+        fieldsToSave.forEach(key => {
+            const inputField = form.elements[key];
+            if (inputField && inputField.value.trim() !== '') {
+                newData[key] = inputField.value.trim();
+            }
+        });
+        
+        // Combine existing data with new data (new data overwrites old)
+        const updatedData = { ...existingData, ...newData };
+
+        // 3. SPECIAL HANDLE: Create a 'fullname' key for template1.html
+        updatedData.fullname = `${updatedData.fname || ''} ${updatedData.lname || ''}`.trim();
+        
+        // 4. Save the combined data back to localStorage
+        localStorage.setItem('resumeData', JSON.stringify(updatedData));
+        
+        // 5. Update user avatar with new initials
+        updateUserAvatar();
+        
+        // 6. Navigate to the next step
+        window.location.href = 'summary.html';
+    }
+
+    // --- FUNCTION 4: UPDATE USER AVATAR ---
+    function updateUserAvatar() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        const firstName = storedData.fname || '';
+        const lastName = storedData.lname || '';
+        
+        let initials = 'U'; // Default to 'U' for User
+        
+        if (firstName && lastName) {
+            initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        } else if (firstName) {
+            initials = firstName.charAt(0).toUpperCase();
+        } else if (lastName) {
+            initials = lastName.charAt(0).toUpperCase();
+        }
+        
+        userInitials.textContent = initials;
+    }
+
+    // --- REAL-TIME VALIDATION ---
+    requiredFields.forEach(field => {
+        const inputElement = form.elements[field];
+        const errorElement = document.getElementById(`${field}-error`);
+        
+        inputElement.addEventListener('blur', () => {
+            if (!inputElement.value.trim()) {
+                inputElement.classList.add('error');
+                errorElement.classList.add('show');
+            } else {
+                inputElement.classList.remove('error');
+                errorElement.classList.remove('show');
+            }
+        });
+        
+        inputElement.addEventListener('input', () => {
+            if (inputElement.value.trim()) {
+                inputElement.classList.remove('error');
+                errorElement.classList.remove('show');
+            }
+        });
+    });
+
+    // --- ATTACH LISTENERS ---
+    
+    // 1. Load data when the page loads
+    window.addEventListener('load', loadData);
+
+    // 2. Save data and navigate when the button is clicked
+    nextBtn.addEventListener('click', saveDataAndNavigate);
+
+    // 3. Mobile menu toggle
+    document.querySelector('.mobile-menu').addEventListener('click', function() {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+        dropdownMenu.classList.remove('show');
+      } else {
+        nav.style.display = 'flex';
+      }
+    });
+
+    // 4. User avatar dropdown toggle
+    userAvatar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // 5. Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.classList.remove('show');
+    });
+
+    // 6. Prevent dropdown from closing when clicking inside it
+    dropdownMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
+    // 7. Update avatar when form fields change
+    document.getElementById('fname').addEventListener('input', updateUserAvatar);
+    document.getElementById('lname').addEventListener('input', updateUserAvatar);
+  </script>
 </body>
 </html>
