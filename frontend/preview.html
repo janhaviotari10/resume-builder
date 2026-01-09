@@ -5,18 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Resume Preview</title>
 
-  {% if resume and resume[7] == 'modern' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='modern.css') }}">
-  {% elif resume and resume[7] == 'classic' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='classic.css') }}">
-  {% elif resume and resume[7] == 'clean' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='clean.css') }}">
-  {% elif resume and resume[7] == 'elegant' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='elegant.css') }}">
-  {% elif resume and resume[7] == 'bold' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='bold.css') }}">
-  {% elif resume and resume[7] == 'minimal' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='minimal.css') }}">
+  {% if resume and resume[7] %}
+    <link rel="stylesheet" href="{{ url_for('static', filename=resume[7] + '.css') }}">
   {% endif %}
 
   <style>
