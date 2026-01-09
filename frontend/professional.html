@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Professional Resume Template</title>
+  <!-- Add html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      background: #fafafa; 
+    }
+    .resume-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header { 
+      text-align: center; 
+      padding: 15px; 
+      background: #2e86de; 
+      color: white; 
+      border-radius: 8px; 
+    }
+    .header h1 { 
+      margin: 5px; 
+    }
+    .section { 
+      margin-top: 30px; 
+    }
+    .section h2 { 
+      border-left: 5px solid #2e86de; 
+      padding-left: 10px; 
+      color: #2e86de; 
+    }
+    .timeline { 
+      margin: 20px 0; 
+      padding: 0; 
+      list-style: none; 
+      position: relative; 
+    }
+    .timeline:before { 
+      content: ""; 
+      position: absolute; 
+      left: 20px; 
+      top: 0; 
+      bottom: 0; 
+      width: 2px; 
+      background: #ccc; 
+    }
+    .timeline li { 
+      margin: 20px 0; 
+      padding-left: 50px; 
+      position: relative; 
+    }
+    .timeline li:before { 
+      content: ""; 
+      position: absolute; 
+      left: 12px; 
+      top: 5px; 
+      width: 16px; 
+      height: 16px; 
+      border-radius: 50%; 
+      background: #2e86de; 
+    }
+    .item-title { 
+      font-weight: bold; 
+    }
+    .demo { 
+      color: gray; 
+    }
+    ul.skills { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 10px; 
+      list-style: none; 
+      padding: 0; 
+    }
+    ul.skills li { 
+      background: #dff9fb; 
+      padding: 5px 10px; 
+      border-radius: 5px; 
+    }
+
+    /* Download button styling */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2e86de;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+      transition: background 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .download-btn:hover {
+      background: #1a6dc1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Print styles for better PDF output */
+    @media print {
+      .download-btn {
+        display: none;
+      }
+      body {
+        background: white !important;
+        margin: 0;
+        padding: 0;
+      }
+      .resume-container {
+        box-shadow: none !important;
+        margin: 0 !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        padding: 20px !important;
+      }
+    }
+    
+    /* Loading indicator for PDF generation */
+    .pdf-loading {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .pdf-loading.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <!-- Download Button -->
+  <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
+  
+  <!-- PDF Loading Indicator -->
+  <div class="pdf-loading" id="pdfLoading">
+    <div>Generating PDF... Please wait</div>
+  </div>
+
+  <div class="resume-container" id="resume-content">
+    <div class="header">
+      <h1 id="name">John Doe</h1>
+      <p id="contact">Email: john@example.com | Phone: 9876543210</p>
+      <p id="links">LinkedIn: linkedin.com/in/john | GitHub: github.com/john</p>
+    </div>
+
+    <div class="section">
+      <h2>Profile</h2>
+      <p id="profile">Passionate software developer skilled in modern web technologies.</p>
+    </div>
+
+    <div class="section">
+      <h2>Skills</h2>
+      <ul class="skills" id="skills-list">
+        <li>JavaScript</li><li>Python</li><li>React</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Work Experience</h2>
+      <ul class="timeline" id="experience-list">
+        <li><span class="item-title">Software Engineer at ABC Corp</span><br><span class="demo">2020 - Present · Built dynamic web apps</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Projects</h2>
+      <ul class="timeline" id="projects-list">
+        <li><span class="item-title">Portfolio Website</span><br><span class="demo">Responsive personal portfolio</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Education</h2>
+      <ul class="timeline" id="education-list">
+        <li><span class="item-title">B.Tech in Computer Science</span><br><span class="demo">XYZ University, 2016-2020</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Achievements</h2>
+      <ul class="timeline" id="achievements-list">
+        <li><span class="item-title">Certified AWS Cloud Practitioner</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // --- Utility Function ---
+    function isNotEmpty(value) {
+        return value !== null && value !== undefined && String(value).trim() !== '';
+    }
+
+    // --- Main Data Loading Function ---
+    function loadResumeData() {
+        const savedData = JSON.parse(localStorage.getItem("resumeData")) || {};
+
+        // Personal Information
+        const fname = savedData.fname || '';
+        const lname = savedData.lname || '';
+        document.getElementById("name").innerText = `${fname} ${lname}`.trim() || 'Your Full Name';
+        
+        // Contact Information
+        const email = savedData.email || 'email@example.com';
+        const phone = savedData.phone || 'Phone Number';
+        const address = savedData.address || 'City, State';
+        document.getElementById("contact").innerText = `Email: ${email} | Phone: ${phone} | Location: ${address}`;
+        
+        // Links
+        const linkedin = savedData.linkedin || 'linkedin.com/in/yourprofile';
+        const github = savedData.github || 'github.com/yourusername';
+        document.getElementById("links").innerText = `LinkedIn: ${linkedin} | GitHub: ${github}`;
+
+        // Profile Summary
+        document.getElementById("profile").innerText = savedData.summary || 'Professional summary will appear here.';
+
+        // Skills
+        const skillList = document.getElementById("skills-list");
+        skillList.innerHTML = "";
+        if (savedData.skills) {
+            const skillsArray = savedData.skills.split(/[,;\n]/).map(s => s.trim()).filter(isNotEmpty);
+            if (skillsArray.length > 0) {
+                skillsArray.forEach(skill => {
+                    skillList.innerHTML += `<li>${skill}</li>`;
+                });
+            } else {
+                skillList.innerHTML = '<li>No skills added yet</li>';
+            }
+        } else {
+            skillList.innerHTML = '<li>No skills added yet</li>';
+        }
+
+        // Work Experience
+        const expList = document.getElementById("experience-list");
+        expList.innerHTML = "";
+
+        if (savedData.experiences && Array.isArray(savedData.experiences)) {
+            if (savedData.experiences.length > 0) {
+                savedData.experiences.forEach(exp => {
+                    const endDate = exp.current === true ? 'Present' : (exp.end || '');
+                    const description = exp.description || 'Description of responsibilities and achievements.';
+                    expList.innerHTML += `<li><span class="item-title">${exp.title || 'Job Title'} at ${exp.company || 'Company Name'}</span><br><span class="demo">${exp.start || 'Start Date'} - ${endDate} · ${description}</span></li>`;
+                });
+            } else {
+                expList.innerHTML = '<li><span class="item-title">No work experience added yet</span></li>';
+            }
+        } else if (savedData.company) {
+            const companies = Array.isArray(savedData.company) ? savedData.company : [savedData.company];
+            const roles = Array.isArray(savedData.role) ? savedData.role : [savedData.role];
+            const startDates = Array.isArray(savedData.startDate) ? savedData.startDate : [savedData.startDate];
+            const endDates = Array.isArray(savedData.endDate) ? savedData.endDate : [savedData.endDate];
+            const descriptions = Array.isArray(savedData.description) ? savedData.description : [savedData.description];
+            
+            companies.forEach((company, i) => {
+                if (company) {
+                    const role = roles[i] || 'Job Title';
+                    const startDate = startDates[i] || 'Start Date';
+                    const endDate = endDates[i] || 'Present';
+                    const description = descriptions[i] || 'Description of responsibilities.';
+                    expList.innerHTML += `<li><span class="item-title">${role} at ${company}</span><br><span class="demo">${startDate} - ${endDate} · ${description}</span></li>`;
+                }
+            });
+            
+            if (companies.length === 0) {
+                expList.innerHTML = '<li><span class="item-title">No work experience added yet</span></li>';
+            }
+        } else {
+            expList.innerHTML = '<li><span class="item-title">No work experience added yet</span></li>';
+        }
+
+        // Projects
+        const projList = document.getElementById("projects-list");
+        projList.innerHTML = "";
+
+        if (savedData.projects && Array.isArray(savedData.projects)) {
+            if (savedData.projects.length > 0) {
+                savedData.projects.forEach(project => {
+                    const duration = project.duration || 'Project Duration';
+                    const description = project.description || 'Project description and key achievements.';
+                    const technologies = project.technologies ? ` | Technologies: ${project.technologies}` : '';
+                    projList.innerHTML += `<li><span class="item-title">${project.name || 'Project Name'}</span><br><span class="demo">${duration} · ${description}${technologies}</span></li>`;
+                });
+            } else {
+                projList.innerHTML = '<li><span class="item-title">No projects added yet</span></li>';
+            }
+        } else if (savedData.projectName) {
+            const names = Array.isArray(savedData.projectName) ? savedData.projectName : [savedData.projectName];
+            const descs = Array.isArray(savedData.projectDesc) ? savedData.projectDesc : [savedData.projectDesc];
+            const techs = Array.isArray(savedData.projectTech) ? savedData.projectTech : [savedData.projectTech];
+            const durations = Array.isArray(savedData.projectDuration) ? savedData.projectDuration : [savedData.projectDuration];
+            
+            names.forEach((name, i) => {
+                if (name) {
+                    const desc = descs[i] || 'Project description';
+                    const tech = techs[i] ? ` | Technologies: ${techs[i]}` : '';
+                    const duration = durations[i] || 'Project Duration';
+                    projList.innerHTML += `<li><span class="item-title">${name}</span><br><span class="demo">${duration} · ${desc}${tech}</span></li>`;
+                }
+            });
+            
+            if (names.length === 0) {
+                projList.innerHTML = '<li><span class="item-title">No projects added yet</span></li>';
+            }
+        } else {
+            projList.innerHTML = '<li><span class="item-title">No projects added yet</span></li>';
+        }
+
+        // Education
+        const eduList = document.getElementById("education-list");
+        eduList.innerHTML = "";
+
+        if (savedData.educations && Array.isArray(savedData.educations)) {
+            if (savedData.educations.length > 0) {
+                savedData.educations.forEach(edu => {
+                    const degree = edu.degree || 'Degree Name';
+                    const school = edu.school || 'School Name';
+                    const gradDate = edu['grad-date'] || 'Graduation Year';
+                    const location = edu.location || 'Location';
+                    const gpa = edu.gpa ? ` | GPA: ${edu.gpa}` : '';
+                    eduList.innerHTML += `<li><span class="item-title">${degree}</span><br><span class="demo">${school}, ${location} · ${gradDate}${gpa}</span></li>`;
+                });
+            } else {
+                eduList.innerHTML = '<li><span class="item-title">No education added yet</span></li>';
+            }
+        } else if (savedData.degree) {
+            const degrees = Array.isArray(savedData.degree) ? savedData.degree : [savedData.degree];
+            const schools = Array.isArray(savedData.school) ? savedData.school : [savedData.school];
+            const years = Array.isArray(savedData.year) ? savedData.year : [savedData.year];
+            const locations = Array.isArray(savedData.location) ? savedData.location : [savedData.location];
+            
+            degrees.forEach((degree, i) => {
+                if (degree) {
+                    const school = schools[i] || 'School Name';
+                    const year = years[i] || 'Year';
+                    const location = locations[i] || 'Location';
+                    eduList.innerHTML += `<li><span class="item-title">${degree}</span><br><span class="demo">${school}, ${location} · ${year}</span></li>`;
+                }
+            });
+            
+            if (degrees.length === 0) {
+                eduList.innerHTML = '<li><span class="item-title">No education added yet</span></li>';
+            }
+        } else {
+            eduList.innerHTML = '<li><span class="item-title">No education added yet</span></li>';
+        }
+
+        // Achievements (using languages as achievements for now)
+        const achList = document.getElementById("achievements-list");
+        achList.innerHTML = "";
+        
+        if (savedData.languages && isNotEmpty(savedData.languages)) {
+            const languages = savedData.languages.split(',').map(lang => lang.trim());
+            languages.forEach(lang => {
+                achList.innerHTML += `<li><span class="item-title">${lang} Language Proficiency</span></li>`;
+            });
+        } else {
+            achList.innerHTML = '<li><span class="item-title">Certifications and achievements will appear here</span></li>';
+        }
+    }
+
+    // --- PDF Download Function ---
+    function downloadPDF() {
+      const element = document.getElementById('resume-content');
+      const loadingIndicator = document.getElementById('pdfLoading');
+      
+      // Show loading indicator
+      loadingIndicator.classList.add('show');
+      
+      // Get user name for filename
+      const userName = document.getElementById('name').textContent || 'resume';
+      const fileName = `${userName.replace(/\s+/g, '_')}_resume.pdf`;
+      
+      // Options for PDF generation
+      const options = {
+        margin: 10,
+        filename: fileName,
+        image: { 
+          type: 'jpeg', 
+          quality: 0.98 
+        },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait' 
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'] 
+        }
+      };
+
+      // Generate and download PDF
+      html2pdf()
+        .set(options)
+        .from(element)
+        .save()
+        .then(() => {
+          // Hide loading indicator when done
+          loadingIndicator.classList.remove('show');
+        })
+        .catch((error) => {
+          console.error('PDF generation failed:', error);
+          loadingIndicator.classList.remove('show');
+          alert('Failed to generate PDF. Please try again.');
+        });
+    }
+
+    // Load data when the page is fully loaded
+    window.addEventListener('load', loadResumeData);
+  </script>
+</body>
+</html>
