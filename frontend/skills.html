@@ -3,162 +3,780 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 5 - Skills</title>
+  <title>Skills - ResumeBuilder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary-blue: #0056b3;
+      --light-blue: #e6f0ff;
+      --white: #ffffff;
+      --light-gray: #f8f9fa;
+      --dark-gray: #2c3e50;
+      --medium-gray: #6c757d;
+      --border-color: #e9ecef;
+      --error-red: #dc3545;
+      --success-green: #28a745;
+    }
+    
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-gray);
+      color: var(--dark-gray);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header */
     header {
-      background-color: #0056b3;
-      color: white;
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
-
-    header nav a {
-      color: white;
-      margin-left: 1.5rem;
+    
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--dark-gray);
       text-decoration: none;
       font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
     }
-
-    .container {
-      max-width: 700px;
-      margin: 2rem auto;
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    .nav-link:hover {
+      color: var(--primary-blue);
+      background: var(--light-blue);
     }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      color: #0056b3;
-      text-decoration: none;
-      font-size: 0.95rem;
+    
+    .nav-link.active {
+      color: var(--primary-blue);
+      background: var(--light-blue);
     }
-
-    .progress {
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      position: relative;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .progress-bar {
-      background-color: #e0e0e0;
-      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid var(--light-blue);
+      transition: all 0.3s ease;
       overflow: hidden;
-      height: 10px;
-      margin-bottom: 1.5rem;
     }
-
-    .progress-bar-fill {
-      background-color: #0056b3;
+    
+    .user-avatar img {
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      display: none;
     }
-
-    h2 {
-      margin-bottom: 1rem;
-      color: #0056b3;
+    
+    .user-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
     }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 500;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .tip {
-      font-size: 0.9rem;
-      color: #666;
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem;
+      min-width: 150px;
+      display: none;
+      z-index: 1000;
       margin-top: 0.5rem;
     }
-
-    .action-buttons {
-      margin-top: 1.5rem;
-      display: flex;
-      gap: 1rem;
+    
+    .dropdown-menu.show {
+      display: block;
     }
-
-    .action-buttons button,
-    .nav-buttons a {
-      background-color: #0056b3;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
+    
+    .dropdown-item {
+      padding: 0.6rem 1rem;
       text-decoration: none;
+      color: var(--dark-gray);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .dropdown-item:hover {
+      background: var(--light-blue);
+      color: var(--primary-blue);
+    }
+    
+    .mobile-menu {
+      display: none;
+      font-size: 1.3rem;
       cursor: pointer;
     }
 
-    .use-template-btn {
-      background-color: #0056b3;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 5px;
+    /* Main Container - Centered */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1rem;
+      width: 100%;
+    }
+    
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      background-color: var(--white);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-color);
+      margin: 0 auto;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
       text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 1rem;
-      transition: background-color 0.3s ease;
-}
-
-.use-template-btn:hover {
-  background-color: #003f8a;
-}
-
-    .nav-buttons {
-      margin-top: 2rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 0.85rem;
+    }
+    
+    .back-link:hover {
+      color: #004494;
+    }
+    
+    /* Progress Section - Compact */
+    .progress-section {
+      margin-bottom: 1rem;
+    }
+    
+    .progress-info {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+    
+    .progress-text {
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.85rem;
+    }
+    
+    .progress-percentage {
+      font-weight: 700;
+      color: var(--primary-blue);
+      font-size: 0.8rem;
+    }
+    
+    .progress-bar {
+      background-color: var(--light-gray);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 5px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary-blue), #0077e6);
+      height: 100%;
+      width: 83%;
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+    
+    /* Form Section - Compact */
+    .form-section h2 {
+      font-size: 1.3rem;
+      color: var(--primary-blue);
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+    
+    .form-description {
+      color: var(--medium-gray);
+      margin-bottom: 1.2rem;
+      font-size: 0.85rem;
+    }
+    
+    /* Skills Section */
+    .skills-container {
+      margin-bottom: 1.5rem;
+    }
+    
+    .skills-input-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.9rem;
+    }
+    
+    .required::after {
+      content: " *";
+      color: var(--error-red);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: 5px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      background-color: var(--white);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.1);
+    }
+    
+    .form-control.error {
+      border-color: var(--error-red);
+      box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+    }
+    
+    .form-hint {
+      font-size: 0.8rem;
+      color: var(--medium-gray);
+      margin-top: 0.5rem;
+      line-height: 1.4;
+    }
+    
+    .skills-preview {
+      background: var(--light-gray);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .skills-preview-title {
+      font-weight: 600;
+      color: var(--primary-blue);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .skills-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .skill-tag {
+      background: var(--primary-blue);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .skill-tag .remove-skill {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 0.7rem;
+      padding: 0;
+      margin-left: 0.2rem;
+    }
+    
+    .skill-tag .remove-skill:hover {
+      opacity: 0.8;
+    }
+    
+    .empty-state {
+      color: var(--medium-gray);
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+    
+    .error-message {
+      color: var(--error-red);
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    /* Navigation Buttons - Compact */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .btn {
+      padding: 0.6rem 1rem;
+      border-radius: 5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(0, 86, 179, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background-color: #004494;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.4);
+    }
+    
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary-blue);
+      border: 1.5px solid var(--primary-blue);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--light-blue);
+      transform: translateY(-1px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .container {
+        max-width: 95%;
+        padding: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8rem;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 0.8rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        gap: 0.8rem;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .nav-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 0.3rem;
+      }
+      
+      .progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+      }
+      
+      .form-section h2 {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div><strong>ResumeBuilder</strong></div>
+    <div class="logo">ResumeBuilder</div>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <div class="user-menu">
+        <div class="user-avatar" id="userAvatar">
+          <img src="" alt="Profile" style="display: none;">
+          <span id="userInitials">U</span>
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="profile.html" class="dropdown-item">
+            <i class="fas fa-user"></i>
+            My Profile
+          </a>
+          <a href="settings.html" class="dropdown-item">
+            <i class="fas fa-cog"></i>
+            Settings
+          </a>
+          <a href="logout.html" class="dropdown-item">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+      </div>
     </nav>
+    <div class="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
-  <div class="container">
-    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
-    <div class="progress">Step 5 of 5 — 100% Complete</div>
-    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+  <div class="main-content">
+    <div class="container">
+      <a href="education.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Education
+      </a>
 
-    <h2>Skills</h2>
-    <label for="skills">List your skills</label>
-    <input type="text" id="skills" placeholder="e.g., JavaScript, Project Management, Adobe Photoshop" />
-    <div class="tip">Add both technical and soft skills relevant to your target position.</div>
+      <!-- Progress Section -->
+      <div class="progress-section">
+        <div class="progress-info">
+          <div class="progress-text">Step 5 of 6 - Skills</div>
+          <div class="progress-percentage">83% Complete</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
 
-    <div class="action-buttons">
-      <button type="button">Add Skill</button>
-      <a href="template.html" class="use-template-btn">Continue to Templates</a>
-    </div>
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2>Skills</h2>
+        <p class="form-description">Add your key skills to showcase your expertise. You can add multiple skills separated by commas.</p>
 
-    <div class="nav-buttons">
-      <a href="education.html">Previous</a>
+        <div class="skills-container">
+          <form id="skillsForm">
+            <div class="skills-input-group">
+              <label for="skills" class="form-label required">Your Skills</label>
+              <input type="text" id="skills" name="skills" class="form-control" placeholder="e.g., JavaScript, Project Management, Adobe Photoshop, Public Speaking" autocomplete="off">
+              <div class="error-message" id="skills-error">Please enter at least one skill</div>
+              <div class="form-hint">
+                Separate skills with commas. You can include technical skills, soft skills, tools, languages, etc.
+              </div>
+            </div>
+          </form>
+
+          <!-- Skills Preview -->
+          <div class="skills-preview">
+            <div class="skills-preview-title">Skills Preview</div>
+            <div class="skills-tags" id="skillsPreview">
+              <div class="empty-state">No skills added yet. Start typing above to see your skills here.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+          <a href="education.html" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Back to Education
+          </a>
+          <button id="continueToProjectsBtn" class="btn btn-primary">
+            Continue to Projects
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    const form = document.getElementById('skillsForm');
+    const continueToProjectsBtn = document.getElementById('continueToProjectsBtn');
+    const skillsInput = document.getElementById('skills');
+    const skillsPreview = document.getElementById('skillsPreview');
+    const skillsError = document.getElementById('skills-error');
+    const userAvatar = document.getElementById('userAvatar');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const userInitials = document.getElementById('userInitials');
+    
+    const fieldsToSave = ['skills'];
+
+    // --- FUNCTION 1: LOAD DATA ---
+    function loadData() {
+        // Update user avatar with initials
+        updateUserAvatar();
+        
+        // Load existing skills data from localStorage
+        loadExistingSkills();
+    }
+
+    // --- FUNCTION 2: LOAD EXISTING SKILLS ---
+    function loadExistingSkills() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        
+        if (storedData.skills && storedData.skills.trim()) {
+            // Pre-fill the skills input with existing data
+            skillsInput.value = storedData.skills;
+            updateSkillsPreview(storedData.skills);
+        } else {
+            // Start with empty form
+            skillsInput.value = '';
+            updateSkillsPreview('');
+        }
+    }
+
+    // --- FUNCTION 3: UPDATE SKILLS PREVIEW ---
+    function updateSkillsPreview(skillsText) {
+        if (!skillsText.trim()) {
+            skillsPreview.innerHTML = '<div class="empty-state">No skills added yet. Start typing above to see your skills here.</div>';
+            return;
+        }
+        
+        const skills = skillsText.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
+        
+        if (skills.length === 0) {
+            skillsPreview.innerHTML = '<div class="empty-state">No skills added yet. Start typing above to see your skills here.</div>';
+            return;
+        }
+        
+        skillsPreview.innerHTML = skills.map(skill => 
+            `<div class="skill-tag">
+                ${skill}
+                <button type="button" class="remove-skill" data-skill="${skill}">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>`
+        ).join('');
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-skill').forEach(button => {
+            button.addEventListener('click', function() {
+                const skillToRemove = this.getAttribute('data-skill');
+                removeSkill(skillToRemove);
+            });
+        });
+    }
+
+    // --- FUNCTION 4: REMOVE SKILL ---
+    function removeSkill(skillToRemove) {
+        const currentSkills = skillsInput.value.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
+        const updatedSkills = currentSkills.filter(skill => skill !== skillToRemove);
+        
+        skillsInput.value = updatedSkills.join(', ');
+        updateSkillsPreview(skillsInput.value);
+        
+        // Auto-save when skill is removed
+        saveData();
+    }
+
+    // --- FUNCTION 5: VALIDATE FORM ---
+    function validateForm() {
+        const skillsValue = skillsInput.value.trim();
+        
+        if (!skillsValue) {
+            skillsInput.classList.add('error');
+            skillsError.classList.add('show');
+            return false;
+        }
+        
+        const skills = skillsValue.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
+        
+        if (skills.length === 0) {
+            skillsInput.classList.add('error');
+            skillsError.classList.add('show');
+            return false;
+        }
+        
+        skillsInput.classList.remove('error');
+        skillsError.classList.remove('show');
+        return true;
+    }
+
+    // --- FUNCTION 6: SAVE DATA ---
+    function saveData() {
+        // 1. Get current data from localStorage
+        const existingData = JSON.parse(localStorage.getItem('resumeData')) || {};
+
+        // 2. Collect new data from the form fields
+        const newData = {};
+        fieldsToSave.forEach(key => {
+            const inputField = form.elements[key];
+            if (inputField) {
+                // Ensure skills are saved as a trimmed string
+                newData[key] = inputField.value.trim();
+            }
+        });
+        
+        // 3. Combine and Save
+        const updatedData = { ...existingData, ...newData };
+        localStorage.setItem('resumeData', JSON.stringify(updatedData));
+        
+        console.log('Skills data saved to localStorage:', updatedData);
+    }
+
+    // --- FUNCTION 7: SAVE DATA AND NAVIGATE ---
+    function saveDataAndNavigate(event) {
+        event.preventDefault();
+
+        // Validate form first
+        if (!validateForm()) {
+            // Scroll to error
+            skillsInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            skillsInput.focus();
+            return;
+        }
+
+        // Save data one final time before navigation
+        saveData();
+        
+        // Navigate to projects page
+        window.location.href = 'project.html';
+    }
+
+    // --- FUNCTION 8: UPDATE USER AVATAR ---
+    function updateUserAvatar() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        const firstName = storedData.fname || '';
+        const lastName = storedData.lname || '';
+        
+        let initials = 'U'; // Default to 'U' for User
+        
+        if (firstName && lastName) {
+            initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        } else if (firstName) {
+            initials = firstName.charAt(0).toUpperCase();
+        } else if (lastName) {
+            initials = lastName.charAt(0).toUpperCase();
+        }
+        
+        userInitials.textContent = initials;
+    }
+
+    // --- ATTACH LISTENERS ---
+    
+    // 1. Load data when the page loads
+    window.addEventListener('load', loadData);
+
+    // 2. Update skills preview when input changes
+    skillsInput.addEventListener('input', function() {
+        updateSkillsPreview(this.value);
+        
+        // Clear error when user starts typing
+        if (this.value.trim()) {
+            this.classList.remove('error');
+            skillsError.classList.remove('show');
+        }
+        
+        // Auto-save with delay to prevent too many saves
+        clearTimeout(window.autoSaveTimeout);
+        window.autoSaveTimeout = setTimeout(saveData, 1000);
+    });
+
+    // 3. Save data and navigate when the button is clicked
+    continueToProjectsBtn.addEventListener('click', saveDataAndNavigate);
+
+    // 4. Mobile menu toggle
+    document.querySelector('.mobile-menu').addEventListener('click', function() {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+        dropdownMenu.classList.remove('show');
+      } else {
+        nav.style.display = 'flex';
+      }
+    });
+
+    // 5. User avatar dropdown toggle
+    userAvatar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // 6. Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.classList.remove('show');
+    });
+
+    // 7. Prevent dropdown from closing when clicking inside it
+    dropdownMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
+    // 8. Auto-save when leaving the page
+    window.addEventListener('beforeunload', saveData);
+  </script>
 </body>
 </html>
