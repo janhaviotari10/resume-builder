@@ -4,256 +4,451 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up - ResumeBuilder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary-blue: #0056b3;
+      --light-blue: #e6f0ff;
+      --white: #ffffff;
+      --light-gray: #f8f9fa;
+      --dark-gray: #2c3e50;
+      --medium-gray: #6c757d;
+      --border-color: #e9ecef;
+    }
+    
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      overflow-y: auto;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      color: var(--dark-gray);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header - Same as index page */
     header {
-      background-color: #0056b3;
-      color: white;
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-
-    header nav a {
-      color: white;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    header .signup-btn {
-      background-color: white;
-      color: #0056b3;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      text-decoration: none;
+    
+    .logo {
+      font-size: 1.5rem;
       font-weight: bold;
-      margin-left: 1rem;
+      color: var(--primary-blue);
     }
-
-    .container {
-      max-width: 400px;
-      margin: 4rem auto;
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      color: #0056b3;
-      margin-bottom: 0.5rem;
-    }
-
-    .subtext {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-
-    .subtext a {
-      color: #0056b3;
-      text-decoration: none;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 500;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .checkbox {
-      margin-top: 1rem;
+    
+    nav {
       display: flex;
+      gap: 2rem;
       align-items: center;
     }
-
-    .checkbox input {
-      margin-right: 0.5rem;
-    }
-
-    .checkbox a {
-      color: #0056b3;
+    
+    .nav-link {
+      color: var(--dark-gray);
       text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: color 0.3s ease;
     }
-
-    .btn {
+    
+    .nav-link:hover {
+      color: var(--primary-blue);
+    }
+    
+    /* Automatic underline animation */
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary-blue);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
       width: 100%;
-      background-color: #0056b3;
-      color: white;
-      padding: 0.75rem;
-      border: none;
+    }
+    
+    /* Active page underline */
+    .nav-link.active {
+      color: var(--primary-blue);
+    }
+    
+    .nav-link.active::after {
+      width: 100%;
+    }
+    
+    .btn {
+      padding: 0.5rem 1.5rem;
       border-radius: 5px;
-      font-weight: bold;
-      margin-top: 1.5rem;
-      cursor: pointer;
-    }
-
-    .social-login {
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    .social-login p {
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-      color: #666;
-    }
-
-    .social-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .social-buttons button {
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .google {
-      background-color: #db4437;
-      color: white;
-    }
-
-    .facebook {
-      background-color: #3b5998;
-      color: white;
-    }
-
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 2rem;
-      margin-top: 4rem;
-    }
-
-    .footer-columns {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .footer-column {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .footer-column h4 {
-      margin-bottom: 0.5rem;
-      color: #f0f0f0;
-    }
-
-    .footer-column p,
-    .footer-column a {
-      font-size: 0.95rem;
-      color: #ccc;
       text-decoration: none;
-      display: block;
-      margin-bottom: 0.3rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 86, 179, 0.4);
+    }
+    
+    .mobile-menu {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
-    .footer-bottom {
+    /* Sign Up Container */
+    .signup-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-color: var(--white);
+    }
+    
+    .signup-card {
+      display: flex;
+      width: 100%;
+      max-width: 900px;
+      min-height: 450px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    }
+    
+    .card-left {
+      flex: 1;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, #003d82 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem;
+      color: var(--white);
+    }
+    
+    .card-left-content {
+      max-width: 100%;
       text-align: center;
-      font-size: 0.85rem;
-      color: #aaa;
+    }
+    
+    .card-left h1 {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+    
+    .card-left p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-image {
+      width: 180px;
+      height: 130px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    
+    .card-image i {
+      font-size: 3rem;
+      opacity: 0.8;
+    }
+    
+    .card-right {
+      flex: 1;
+      background-color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2.5rem;
+    }
+    
+    .signup-form-container {
+      max-width: 100%;
+      width: 100%;
+    }
+    
+    .signup-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .signup-title {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+      color: var(--primary-blue);
+      font-weight: 700;
+    }
+    
+    .signup-subtitle {
+      font-size: 0.95rem;
+      color: var(--medium-gray);
+    }
+    
+    .signup-subtitle a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .signup-subtitle a:hover {
+      text-decoration: underline;
+    }
+    
+    .signup-form {
+      text-align: left;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .form-group {
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.9rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.7rem;
+      border: 2px solid #e1e5e9;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      background-color: var(--light-gray);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      background-color: var(--white);
+    }
+    
+    .signup-btn {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: var(--primary-blue);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1.2rem;
+    }
+    
+    .signup-btn:hover {
+      background-color: #004494;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+    }
+    
+    .login-link {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--medium-gray);
+    }
+    
+    .login-link a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        gap: 1rem;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .signup-card {
+        flex-direction: column;
+        max-width: 450px;
+      }
+      
+      .card-left, .card-right {
+        padding: 2rem;
+      }
+      
+      .card-image {
+        width: 150px;
+        height: 120px;
+      }
+      
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .signup-container {
+        padding: 1rem;
+      }
+      
+      .card-left, .card-right {
+        padding: 1.5rem;
+      }
+      
+      .card-left h1 {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo"><strong>ResumeBuilder</strong></div>
+    <div class="logo">ResumeBuilder</div>
     <nav>
-      <a href="/">Home</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html" class="signup-btn">Sign Up</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="login.html" class="nav-link">Login</a>
+      <a href="signup.html" class="nav-link active">Sign Up</a>
     </nav>
+    <div class="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
-  <div class="container">
-    <h2>Create your account</h2>
-    <div class="subtext">
-      Or <a href="login.html">sign in to your existing account</a>
-    </div>
-    <form action="/signup.html" method="post">
-      <label for="fname">First name</label>
-      <input type="text" id="fname" name="fname" required />
-
-      <label for="lname">Last name</label>
-      <input type="text" id="lname" name="lname" required />
-
-      <label for="email">Email address</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
-
-      <label for="confirm">Confirm password</label>
-      <input type="password" id="confirm" name="confirm" required />
-
-      <div class="checkbox">
-        <input type="checkbox" id="terms" required />
-        <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+  <div class="signup-container">
+    <div class="signup-card">
+      <div class="card-left">
+        <div class="card-left-content">
+          <h1>Join ResumeBuilder!</h1>
+          <p>Create your account and start building professional resumes with AI-powered assistance.</p>
+          <div class="card-image">
+            <i class="fas fa-user-plus"></i>
+          </div>
+        </div>
       </div>
-
-      <button type="submit" class="btn">Create account</button>
-    </form>
-
-    <div class="social-login">
-      <p>Or continue with</p>
-      <div class="social-buttons">
-        <button class="google">Google</button>
-        <button class="facebook">Facebook</button>
+      
+      <div class="card-right">
+        <div class="signup-form-container">
+          <div class="signup-header">
+            <h2 class="signup-title">Create Account</h2>
+            <p class="signup-subtitle">Or <a href="login.html">sign in to your existing account</a></p>
+          </div>
+          
+          <form class="signup-form" action="/signup.html" method="POST">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" id="fname" name="fname" class="form-control" placeholder="Enter your first name" required>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" name="lname" class="form-control" placeholder="Enter your last name" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="signup-btn">Sign Up</button>
+            
+            <div class="login-link">
+              Already have an account? <a href="login.html">Sign in here</a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="footer-columns">
-      <div class="footer-column">
-        <h4>ResumeBuilder</h4>
-        <p>Create professional resumes with AI-powered assistance. Stand out from the crowd with our modern templates and smart suggestions.</p>
-      </div>
-      <div class="footer-column">
-        <h4>Product</h4>
-        <a href="#">Templates</a>
-        <a href="#">Features</a>
-        <a href="#">Pricing</a>
-      </div>
-      <div class="footer-column">
-        <h4>Support</h4>
-        <a href="#">Help Center</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Privacy Policy</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2024 ResumeBuilder. All rights reserved.
-    </div>
-  </footer>
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu').addEventListener('click', function() {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+      } else {
+        nav.style.display = 'flex';
+      }
+    });
+    
+    // Set active page based on current URL
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPage = window.location.pathname.split('/').pop();
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
