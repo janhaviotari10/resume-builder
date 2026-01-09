@@ -3,153 +3,931 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 4 - Education</title>
+  <title>Education - ResumeBuilder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary-blue: #0056b3;
+      --light-blue: #e6f0ff;
+      --white: #ffffff;
+      --light-gray: #f8f9fa;
+      --dark-gray: #2c3e50;
+      --medium-gray: #6c757d;
+      --border-color: #e9ecef;
+      --error-red: #dc3545;
+      --success-green: #28a745;
+    }
+    
+    * {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-gray);
+      color: var(--dark-gray);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header */
     header {
-      background-color: #0056b3;
-      color: white;
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
-
-    header nav a {
-      color: white;
-      margin-left: 1.5rem;
+    
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--dark-gray);
       text-decoration: none;
       font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
     }
-
-    .container {
-      max-width: 700px;
-      margin: 2rem auto;
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    .nav-link:hover {
+      color: var(--primary-blue);
+      background: var(--light-blue);
     }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      color: #0056b3;
-      text-decoration: none;
-      font-size: 0.95rem;
+    
+    .nav-link.active {
+      color: var(--primary-blue);
+      background: var(--light-blue);
     }
-
-    .progress {
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      position: relative;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .progress-bar {
-      background-color: #e0e0e0;
-      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid var(--light-blue);
+      transition: all 0.3s ease;
       overflow: hidden;
-      height: 10px;
-      margin-bottom: 1.5rem;
     }
-
-    .progress-bar-fill {
-      background-color: #0056b3;
-      width: 80%;
-      height: 100%;
-    }
-
-    h2 {
-      margin-bottom: 1rem;
-      color: #0056b3;
-    }
-
-    form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 500;
-    }
-
-    form input {
+    
+    .user-avatar img {
       width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      height: 100%;
+      object-fit: cover;
+      display: none; /* Hide image by default, we'll use initials */
     }
-
-    .add-btn {
-      margin-top: 1.5rem;
-      background-color: #0056b3;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      border: none;
+    
+    .user-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem;
+      min-width: 150px;
+      display: none;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+    
+    .dropdown-menu.show {
+      display: block;
+    }
+    
+    .dropdown-item {
+      padding: 0.6rem 1rem;
+      text-decoration: none;
+      color: var(--dark-gray);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       border-radius: 5px;
-      font-weight: bold;
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .dropdown-item:hover {
+      background: var(--light-blue);
+      color: var(--primary-blue);
+    }
+    
+    .mobile-menu {
+      display: none;
+      font-size: 1.3rem;
       cursor: pointer;
     }
 
-    .nav-buttons {
-      margin-top: 2rem;
+    /* Main Container - Centered */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1rem;
+      width: 100%;
+    }
+    
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      background-color: var(--white);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-color);
+      margin: 0 auto;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 0.85rem;
+    }
+    
+    .back-link:hover {
+      color: #004494;
+    }
+    
+    /* Progress Section - Compact */
+    .progress-section {
+      margin-bottom: 1rem;
+    }
+    
+    .progress-info {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
     }
-
-    .nav-buttons a {
-      background-color: #0056b3;
+    
+    .progress-text {
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.85rem;
+    }
+    
+    .progress-percentage {
+      font-weight: 700;
+      color: var(--primary-blue);
+      font-size: 0.8rem;
+    }
+    
+    .progress-bar {
+      background-color: var(--light-gray);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 5px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary-blue), #0077e6);
+      height: 100%;
+      width: 65%; /* Updated progress */
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+    
+    /* Form Section - Compact */
+    .form-section h2 {
+      font-size: 1.3rem;
+      color: var(--primary-blue);
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+    
+    .form-description {
+      color: var(--medium-gray);
+      margin-bottom: 1.2rem;
+      font-size: 0.85rem;
+    }
+    
+    /* Education Entries */
+    .education-entries {
+      margin-bottom: 1.5rem;
+    }
+    
+    .education-entry {
+      background: var(--light-gray);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    
+    .entry-title {
+      font-weight: 600;
+      color: var(--primary-blue);
+      font-size: 1rem;
+    }
+    
+    .remove-entry {
+      background: var(--error-red);
       color: white;
-      padding: 0.6rem 1.2rem;
-      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.3s ease;
+    }
+    
+    .remove-entry:hover {
+      background: #c82333;
+    }
+    
+    .add-education {
+      background: var(--success-green);
+      color: white;
+      border: none;
       border-radius: 5px;
-      font-weight: bold;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      transition: background 0.3s ease;
+    }
+    
+    .add-education:hover {
+      background: #218838;
+    }
+    
+    /* Form Grid - Updated layout */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    
+    .form-group {
+      margin-bottom: 0.8rem;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .form-group.dates-group {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      align-items: end;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.8rem;
+    }
+    
+    .required::after {
+      content: " *";
+      color: var(--error-red);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: 5px;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      background-color: var(--white);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.1);
+    }
+    
+    .form-control.error {
+      border-color: var(--error-red);
+      box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+    
+    .error-message {
+      color: var(--error-red);
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    .form-hint {
+      font-size: 0.7rem;
+      color: var(--medium-gray);
+      margin-top: 0.2rem;
+    }
+    
+    /* Navigation Buttons - Compact */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .btn {
+      padding: 0.6rem 1rem;
+      border-radius: 5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: var(--white);
+      box-shadow: 0 3px 10px rgba(0, 86, 179, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background-color: #004494;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.4);
+    }
+    
+    .btn-secondary {
+      background-color: var(--white);
+      color: var(--primary-blue);
+      border: 1.5px solid var(--primary-blue);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--light-blue);
+      transform: translateY(-1px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .container {
+        max-width: 95%;
+        padding: 1.2rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-group.dates-group {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8rem;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 0.8rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        gap: 0.8rem;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .nav-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 0.3rem;
+      }
+      
+      .progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+      }
+      
+      .form-section h2 {
+        font-size: 1.2rem;
+      }
+      
+      .form-group.dates-group {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div><strong>ResumeBuilder</strong></div>
+    <div class="logo">ResumeBuilder</div>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <div class="user-menu">
+        <div class="user-avatar" id="userAvatar">
+          <!-- Profile image is hidden by default, we'll show initials -->
+          <img src="" alt="Profile" style="display: none;">
+          <span id="userInitials">U</span>
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="profile.html" class="dropdown-item">
+            <i class="fas fa-user"></i>
+            My Profile
+          </a>
+          <a href="settings.html" class="dropdown-item">
+            <i class="fas fa-cog"></i>
+            Settings
+          </a>
+          <a href="logout.html" class="dropdown-item">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </a>
+        </div>
+      </div>
     </nav>
+    <div class="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
-  <div class="container">
-    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
-    <div class="progress">Step 4 of 5 — 80% Complete</div>
-    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+  <div class="main-content">
+    <div class="container">
+      <a href="experience.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Work Experience
+      </a>
 
-    <h2>Education</h2>
-    <form>
-      <label for="degree">Degree</label>
-      <input type="text" id="degree" name="degree" placeholder="e.g., Bachelor of Science in Computer Science" />
+      <!-- Progress Section -->
+      <div class="progress-section">
+        <div class="progress-info">
+          <div class="progress-text">Step 4 of 6 - Education</div>
+          <div class="progress-percentage">64% Complete</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
 
-      <label for="school">School/University</label>
-      <input type="text" id="school" name="school" />
+      <!-- Form Section -->
+      <div class="form-section">
+        <h2>Education</h2>
+        <p class="form-description">Add your educational background, starting with your highest degree. You can add multiple education entries.</p>
 
-      <label for="location">Location</label>
-      <input type="text" id="location" name="location" />
+        <div class="education-entries" id="educationEntries">
+          <!-- Education entries will be dynamically added here -->
+        </div>
 
-      <label for="grad-date">Graduation Date</label>
-      <input type="date" id="grad-date" name="grad-date" />
+        <button type="button" class="add-education" id="addEducation">
+          <i class="fas fa-plus"></i>
+          Add Another Education
+        </button>
 
-      <label for="gpa">GPA (Optional)</label>
-      <input type="text" id="gpa" name="gpa" />
-      
-      <button type="button" class="add-btn">Add Education</button>
-    </form>
-
-    <div class="nav-buttons">
-      <a href="experience.html">Previous</a>
-      <a href="skills.html">Next</a>
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+          <a href="experience.html" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Back
+          </a>
+          <button id="nextBtn" class="btn btn-primary">
+            Continue to Skills
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Education Entry Template -->
+  <template id="educationTemplate">
+    <div class="education-entry" data-index="0">
+      <div class="entry-header">
+        <div class="entry-title">Education #<span class="entry-number">1</span></div>
+        <button type="button" class="remove-entry">
+          <i class="fas fa-times"></i> Remove
+        </button>
+      </div>
+      <form class="education-form">
+        <div class="form-grid">
+          <!-- Row 1: Degree | School/University | Location -->
+          <div class="form-group">
+            <label for="degree_0" class="form-label required">Degree</label>
+            <input type="text" id="degree_0" name="degree" class="form-control" placeholder="e.g., Bachelor of Science in Computer Science">
+            <div class="error-message" id="degree-error-0">Please enter your degree</div>
+          </div>
+
+          <div class="form-group">
+            <label for="school_0" class="form-label required">School/University</label>
+            <input type="text" id="school_0" name="school" class="form-control" placeholder="University name">
+            <div class="error-message" id="school-error-0">Please enter school/university name</div>
+          </div>
+
+          <div class="form-group">
+            <label for="location_0" class="form-label required">Location</label>
+            <input type="text" id="location_0" name="location" class="form-control" placeholder="City, State">
+            <div class="error-message" id="location-error-0">Please enter location</div>
+          </div>
+
+          <!-- Row 2: Graduation Date | GPA/Percentage | Currently attending -->
+          <div class="form-group dates-group">
+            <div>
+              <label for="grad-date_0" class="form-label required">Graduation Date</label>
+              <input type="month" id="grad-date_0" name="grad-date" class="form-control">
+              <div class="error-message" id="grad-date-error-0">Please enter graduation date</div>
+            </div>
+            
+            <div>
+              <label for="gpa_0" class="form-label">GPA/Percentage</label>
+              <input type="text" id="gpa_0" name="gpa" class="form-control" placeholder="e.g., 3.8/4.0 or 85%">
+              <div class="form-hint">Optional - include if 3.0+ GPA or 80%+</div>
+            </div>
+            
+            <div class="checkbox-group">
+              <input type="checkbox" id="current_0" name="current">
+              <label for="current_0">Currently attending</label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <script>
+    const educationEntries = document.getElementById('educationEntries');
+    const addEducationBtn = document.getElementById('addEducation');
+    const nextBtn = document.getElementById('nextBtn');
+    const userAvatar = document.getElementById('userAvatar');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const userInitials = document.getElementById('userInitials');
+    const educationTemplate = document.getElementById('educationTemplate');
+    
+    let educationCount = 0;
+    const requiredFields = ['degree', 'school', 'location', 'grad-date'];
+
+    // --- FUNCTION 1: LOAD DATA ---
+    function loadData() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        
+        // Update user avatar with initials
+        updateUserAvatar();
+        
+        // Load education entries
+        const educations = storedData.educations || [];
+        if (educations.length === 0) {
+            addEducation(); // Add one empty education by default
+        } else {
+            educations.forEach(edu => {
+                addEducation(edu);
+            });
+        }
+    }
+
+    // --- FUNCTION 2: ADD EDUCATION ---
+    function addEducation(data = {}) {
+        const entry = educationTemplate.content.cloneNode(true);
+        const entryElement = entry.querySelector('.education-entry');
+        
+        educationCount++;
+        const index = educationCount - 1;
+        
+        // Update all IDs and data attributes
+        entryElement.setAttribute('data-index', index);
+        entryElement.querySelector('.entry-number').textContent = educationCount;
+        
+        const form = entryElement.querySelector('.education-form');
+        const inputs = form.querySelectorAll('input, textarea');
+        
+        inputs.forEach(input => {
+            const name = input.name;
+            const id = `${name}_${index}`;
+            input.id = id;
+            
+            // Update label for attribute
+            const label = form.querySelector(`label[for="${name}_0"]`);
+            if (label) {
+                label.setAttribute('for', id);
+            }
+            
+            // Update error message IDs
+            const errorMsg = form.querySelector(`#${name}-error-0`);
+            if (errorMsg) {
+                errorMsg.id = `${name}-error-${index}`;
+            }
+            
+            // Set value from data if provided
+            if (data[name] !== undefined) {
+                if (input.type === 'checkbox') {
+                    input.checked = data[name] === true || data[name] === 'on';
+                    if (input.checked) {
+                        const gradDateInput = form.querySelector('input[name="grad-date"]');
+                        if (gradDateInput) {
+                            gradDateInput.disabled = true;
+                            gradDateInput.value = '';
+                        }
+                    }
+                } else {
+                    input.value = data[name];
+                }
+            }
+        });
+        
+        educationEntries.appendChild(entry);
+        
+        // Add event listeners for the new entry
+        setupEntryEvents(entryElement);
+    }
+
+    // --- FUNCTION 3: SETUP ENTRY EVENTS ---
+    function setupEntryEvents(entryElement) {
+        const index = entryElement.getAttribute('data-index');
+        const removeBtn = entryElement.querySelector('.remove-entry');
+        const currentCheckbox = entryElement.querySelector('input[name="current"]');
+        const gradDateInput = entryElement.querySelector('input[name="grad-date"]');
+        
+        // Remove entry
+        removeBtn.addEventListener('click', function() {
+            if (document.querySelectorAll('.education-entry').length > 1) {
+                entryElement.remove();
+                updateEntryNumbers();
+            } else {
+                alert('You need at least one education entry.');
+            }
+        });
+        
+        // Currently attending checkbox
+        if (currentCheckbox && gradDateInput) {
+            currentCheckbox.addEventListener('change', function() {
+                gradDateInput.disabled = this.checked;
+                if (this.checked) {
+                    gradDateInput.value = '';
+                }
+            });
+        }
+        
+        // Real-time validation for required fields
+        requiredFields.forEach(field => {
+            const input = entryElement.querySelector(`[name="${field}"]`);
+            const errorElement = entryElement.querySelector(`#${field}-error-${index}`);
+            
+            if (input && errorElement) {
+                input.addEventListener('blur', () => validateField(input, errorElement));
+                input.addEventListener('input', () => clearError(input, errorElement));
+            }
+        });
+    }
+
+    // --- FUNCTION 4: VALIDATE FIELD ---
+    function validateField(input, errorElement) {
+        if (!input.value.trim() && requiredFields.includes(input.name)) {
+            input.classList.add('error');
+            errorElement.classList.add('show');
+            return false;
+        }
+        return true;
+    }
+
+    // --- FUNCTION 5: CLEAR ERROR ---
+    function clearError(input, errorElement) {
+        if (input.value.trim()) {
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+        }
+    }
+
+    // --- FUNCTION 6: UPDATE ENTRY NUMBERS ---
+    function updateEntryNumbers() {
+        const entries = document.querySelectorAll('.education-entry');
+        entries.forEach((entry, index) => {
+            entry.querySelector('.entry-number').textContent = index + 1;
+        });
+    }
+
+    // --- FUNCTION 7: VALIDATE ALL ENTRIES ---
+    function validateAllEntries() {
+        let isValid = true;
+        const entries = document.querySelectorAll('.education-entry');
+        
+        entries.forEach(entry => {
+            // Validate required fields
+            requiredFields.forEach(field => {
+                const input = entry.querySelector(`[name="${field}"]`);
+                const errorElement = entry.querySelector(`#${field}-error-${entry.getAttribute('data-index')}`);
+                
+                if (input && errorElement && !validateField(input, errorElement)) {
+                    isValid = false;
+                }
+            });
+        });
+        
+        return isValid;
+    }
+
+    // --- FUNCTION 8: SAVE DATA AND NAVIGATE ---
+    function saveDataAndNavigate(event) {
+        event.preventDefault();
+
+        // Validate all entries first
+        if (!validateAllEntries()) {
+            // Scroll to first error
+            const firstError = document.querySelector('.error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        // 1. Get current data from localStorage
+        const existingData = JSON.parse(localStorage.getItem('resumeData')) || {};
+
+        // 2. Collect data from all education entries
+        const educations = [];
+        const entries = document.querySelectorAll('.education-entry');
+        
+        entries.forEach(entry => {
+            const form = entry.querySelector('.education-form');
+            const formData = new FormData(form);
+            const education = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key === 'current') {
+                    education[key] = true;
+                } else {
+                    education[key] = value;
+                }
+            }
+            
+            // Handle current education
+            const currentCheckbox = entry.querySelector('input[name="current"]');
+            if (currentCheckbox && currentCheckbox.checked) {
+                education['grad-date'] = 'Present';
+            }
+            
+            educations.push(education);
+        });
+
+        // 3. Combine and Save
+        const updatedData = { ...existingData, educations };
+        localStorage.setItem('resumeData', JSON.stringify(updatedData));
+        
+        // 4. Navigate to the next step
+        window.location.href = 'skills.html';
+    }
+
+    // --- FUNCTION 9: UPDATE USER AVATAR ---
+    function updateUserAvatar() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        const firstName = storedData.fname || '';
+        const lastName = storedData.lname || '';
+        
+        let initials = 'U'; // Default to 'U' for User
+        
+        if (firstName && lastName) {
+            initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+        } else if (firstName) {
+            initials = firstName.charAt(0).toUpperCase();
+        } else if (lastName) {
+            initials = lastName.charAt(0).toUpperCase();
+        }
+        
+        userInitials.textContent = initials;
+    }
+
+    // --- ATTACH LISTENERS ---
+    
+    // 1. Load data when the page loads
+    window.addEventListener('load', loadData);
+
+    // 2. Add education button
+    addEducationBtn.addEventListener('click', () => addEducation());
+
+    // 3. Save data and navigate when the button is clicked
+    nextBtn.addEventListener('click', saveDataAndNavigate);
+
+    // 4. Mobile menu toggle
+    document.querySelector('.mobile-menu').addEventListener('click', function() {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+        dropdownMenu.classList.remove('show');
+      } else {
+        nav.style.display = 'flex';
+      }
+    });
+
+    // 5. User avatar dropdown toggle
+    userAvatar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // 6. Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      dropdownMenu.classList.remove('show');
+    });
+
+    // 7. Prevent dropdown from closing when clicking inside it
+    dropdownMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  </script>
 </body>
 </html>
