@@ -4,266 +4,472 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - ResumeBuilder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
+    :root {
+      --primary-blue: #0056b3;
+      --light-blue: #e6f0ff;
+      --white: #ffffff;
+      --light-gray: #f5f5f5;
+      --dark-gray: #333333;
+      --medium-gray: #666666;
+    }
+    
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      overflow-y: auto;
+      background-color: var(--white);
+      color: var(--dark-gray);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header - Same as index page */
     header {
-      background-color: #0056b3;
-      color: white;
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-
-    header nav a {
-      color: white;
-      margin-left: 1.5rem;
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-blue);
+    }
+    
+    nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--dark-gray);
       text-decoration: none;
       font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: color 0.3s ease;
     }
-
-    header .signup-btn {
-      background-color: white;
-      color: #0056b3;
-      padding: 0.5rem 1rem;
+    
+    .nav-link:hover {
+      color: var(--primary-blue);
+    }
+    
+    /* Automatic underline animation */
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary-blue);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    /* Active page underline */
+    .nav-link.active {
+      color: var(--primary-blue);
+    }
+    
+    .nav-link.active::after {
+      width: 100%;
+    }
+    
+    .btn {
+      padding: 0.5rem 1.5rem;
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
-      margin-left: 1rem;
-    }
-
-    .container {
-      max-width: 400px;
-      margin: 4rem auto;
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      display: inline-block;
       text-align: center;
     }
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: var(--white);
+      box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 86, 179, 0.4);
+    }
+    
+    .mobile-menu {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
 
-    .logo {
-      font-size: 2rem;
-      color: #0056b3;
+    /* Login Container */
+    .login-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-color: var(--white);
+    }
+    
+    .login-card {
+      display: flex;
+      width: 100%;
+      max-width: 900px;
+      min-height: 500px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    }
+    
+    .card-left {
+      flex: 1;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, #003d82 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      color: var(--white);
+    }
+    
+    .card-left-content {
+      max-width: 100%;
+      text-align: center;
+    }
+    
+    .card-left h1 {
+      font-size: 2.2rem;
       margin-bottom: 1rem;
+      font-weight: 700;
     }
-
-    h2 {
+    
+    .card-left p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+    
+    .card-image {
+      width: 200px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    
+    .card-image i {
+      font-size: 3.5rem;
+      opacity: 0.8;
+    }
+    
+    .card-right {
+      flex: 1;
+      background-color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem;
+    }
+    
+    .login-form-container {
+      max-width: 100%;
+      width: 100%;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .login-title {
+      font-size: 2rem;
       margin-bottom: 0.5rem;
-      color: #0056b3;
+      color: var(--primary-blue);
+      font-weight: 700;
     }
-
-    .subtext {
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
+    
+    .login-subtitle {
+      font-size: 1rem;
+      color: var(--medium-gray);
     }
-
-    .subtext a {
-      color: #0056b3;
-      text-decoration: none;
-    }
-
-    form {
+    
+    .login-form {
       text-align: left;
     }
-
-    label {
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
       display: block;
-      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-gray);
+      font-size: 0.95rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e1e5e9;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background-color: var(--light-gray);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      background-color: var(--white);
+      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+    }
+    
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .forgot-password {
+      color: var(--primary-blue);
+      text-decoration: none;
       font-weight: 500;
     }
-
-    input[type="email"],
-    input[type="password"] {
+    
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    
+    .login-btn {
       width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1rem;
-    }
-
-    .options label {
-      display: flex;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-
-    .options input {
-      margin-right: 0.4rem;
-    }
-
-    .options a {
-      font-size: 0.9rem;
-      color: #0056b3;
-      text-decoration: none;
-    }
-
-    .btn {
-      width: 100%;
-      background-color: #0056b3;
-      color: white;
-      padding: 0.75rem;
+      padding: 0.8rem;
+      background-color: var(--primary-blue);
+      color: var(--white);
       border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      margin-top: 1.5rem;
-      cursor: pointer;
-    }
-
-    .social-login {
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    .social-login p {
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-      color: #666;
-    }
-
-    .social-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .social-buttons button {
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
     }
-
-    .google {
-      background-color: #db4437;
-      color: white;
+    
+    .login-btn:hover {
+      background-color: #004494;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
     }
-
-    .facebook {
-      background-color: #3b5998;
-      color: white;
-    }
-
-    footer {
-      background-color: #333;
-      color: white;
-      padding: 2rem;
-      margin-top: 4rem;
-    }
-
-    .footer-columns {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .footer-column {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .footer-column h4 {
-      margin-bottom: 0.5rem;
-      color: #f0f0f0;
-    }
-
-    .footer-column p,
-    .footer-column a {
-      font-size: 0.95rem;
-      color: #ccc;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    .footer-bottom {
+    
+    .signup-link {
       text-align: center;
-      font-size: 0.85rem;
-      color: #aaa;
+      font-size: 0.95rem;
+      color: var(--medium-gray);
+    }
+    
+    .signup-link a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        gap: 1rem;
+      }
+      
+      .mobile-menu {
+        display: block;
+      }
+      
+      .login-card {
+        flex-direction: column;
+        max-width: 450px;
+      }
+      
+      .card-left, .card-right {
+        padding: 2rem;
+      }
+      
+      .card-image {
+        width: 150px;
+        height: 120px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .login-container {
+        padding: 1rem;
+      }
+      
+      .card-left, .card-right {
+        padding: 1.5rem;
+      }
+      
+      .card-left h1 {
+        font-size: 1.8rem;
+      }
+      
+      .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo"><strong>ResumeBuilder</strong></div>
+    <div class="logo">ResumeBuilder</div>
     <nav>
-      <a href="/">Home</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html" class="signup-btn">Sign Up</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="login.html" class="nav-link active">Login</a>
+      <a href="signup.html" class="btn btn-primary">Sign Up</a>
     </nav>
+    <div class="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
   </header>
 
-  <div class="container">
-    <div class="logo">R</div>
-    <h2>Sign in to your account</h2>
-    <div class="subtext">
-      Or <a href="signup.html">create a new account</a>
-    </div>
-    <form action="/login.html" method="post">
-      {% if error %}
-      <div style="color: red; margin-bottom: 1rem;">{{ error }}</div>
-      {% endif %}
-      
-      <label for="email">Email address</label>
-      <input type="email" id="email" name="email" required />
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
-      <div class="options">
-        <label><input type="checkbox" /> Remember me</label>
-        <a href="#">Forgot your password?</a>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="card-left">
+        <div class="card-left-content">
+          <h1>Welcome Back!</h1>
+          <p>Sign in to access your professional resume builder and continue creating amazing resumes.</p>
+          <div class="card-image">
+            <i class="fas fa-file-alt"></i>
+          </div>
+        </div>
       </div>
-       <button type="submit" class="btn">Sign in</button>
-    </form>
+      
+      <div class="card-right">
+        <div class="login-form-container">
+          <div class="login-header">
+            <h2 class="login-title">Login</h2>
+            <p class="login-subtitle">Enter your credentials to continue</p>
+          </div>
+          
+          <form class="login-form" action="/login.html" method="POST">
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input 
+      type="email" 
+      id="email" 
+      name="email" 
+      class="form-control" 
+      placeholder="Enter your email" 
+      required>
+  </div>
+  
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input 
+      type="password" 
+      id="password" 
+      name="password" 
+      class="form-control" 
+      placeholder="Enter your password" 
+      required>
+  </div>
+  
+  <div class="form-options">
+    <label class="remember-me">
+      <input type="checkbox"> Remember me
+    </label>
+    <a href="#" class="forgot-password">Forgot password?</a>
+  </div>
+  
+  <button type="submit" class="login-btn">Login</button>
+  
+  {% if error %}
+  <p style="color: red; text-align:center;">{{ error }}</p>
+  {% endif %}
+  
+  <div class="signup-link">
+    Don't have an account? <a href="signup.html">Sign up here</a>
+  </div>
+</form>
 
-    <div class="social-login">
-      <p>Or continue with</p>
-      <div class="social-buttons">
-        <button class="google">Google</button>
-        <button class="facebook">Facebook</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="footer-columns">
-      <div class="footer-column">
-        <h4>ResumeBuilder</h4>
-        <p>Create professional resumes with AI-powered assistance. Stand out from the crowd with our modern templates and smart suggestions.</p>
-      </div>
-      <div class="footer-column">
-        <h4>Product</h4>
-        <a href="#">Templates</a>
-        <a href="#">Features</a>
-        <a href="#">Pricing</a>
-      </div>
-      <div class="footer-column">
-        <h4>Support</h4>
-        <a href="#">Help Center</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Privacy Policy</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2024 ResumeBuilder. All rights reserved.
-    </div>
-  </footer>
- </body>
-</html>
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu').addEventListener('click', function() {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+      } else {
+        nav.style.display = 'flex';
+      }
+    });
     
+    // Set active page based on current URL
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPage = window.location.pathname.split('/').pop();
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
