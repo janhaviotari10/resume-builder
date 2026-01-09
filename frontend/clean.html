@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Template 5</title>
+  <!-- Add html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f9;
+      color: #2d3436;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 30% 70%;
+      max-width: 1000px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .sidebar {
+      background: #2e86de; /* Bright Blue */
+      color: white;
+      padding: 30px 20px;
+    }
+    .sidebar h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    .sidebar p {
+      margin: 5px 0;
+      font-size: 14px;
+      word-wrap: break-word; /* Ensure long links wrap */
+    }
+    .sidebar a {
+        color: inherit;
+        text-decoration: none;
+    }
+    .sidebar a:hover {
+        text-decoration: underline;
+    }
+    .sidebar h2 {
+      margin-top: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+      padding-bottom: 5px;
+      font-size: 16px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+    .sidebar ul li {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .content {
+      padding: 30px;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    .section h2 {
+      color: #2e86de;
+      border-bottom: 2px solid #dcdde1;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    .section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .section ul li {
+      margin-bottom: 12px;
+    }
+    .item-title {
+      font-weight: bold;
+      color: #2d3436;
+      display: block;
+    }
+    .item-details {
+      color: #57606f; /* Slightly muted color for details */
+      font-size: 14px;
+    }
+    
+    /* Download button styling */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2e86de;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+      transition: background 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .download-btn:hover {
+      background: #1a73e8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Print styles for better PDF output */
+    @media print {
+      .download-btn {
+        display: none;
+      }
+      body {
+        background: white !important;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        box-shadow: none !important;
+        margin: 0 !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+      }
+    }
+    
+    /* Loading indicator for PDF generation */
+    .pdf-loading {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .pdf-loading.show {
+      display: flex;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            grid-template-columns: 1fr; /* Stack sidebar and content */
+            margin: 0;
+            border-radius: 0;
+        }
+        .download-btn {
+          position: relative;
+          top: auto;
+          right: auto;
+          margin: 10px auto;
+          display: block;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Download Button -->
+  <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
+  
+  <!-- PDF Loading Indicator -->
+  <div class="pdf-loading" id="pdfLoading">
+    <div>Generating PDF... Please wait</div>
+  </div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1 id="name">John Doe</h1>
+      <p id="title">Job Title / Aspiration</p>
+
+      <h2>Contact</h2>
+      <p><a href="" id="email">email@example.com</a></p>
+      <p id="phone">Phone Number</p>
+      <p id="address">City, State</p>
+      <!-- Optional Socials - using placeholders for now -->
+      <p id="linkedin-display"><a href="#" id="linkedin">linkedin.com/in/john</a></p>
+      <p id="github-display"><a href="#" id="github">github.com/john</a></p>
+
+      <h2>Skills</h2>
+      <ul id="skills-list">
+        <li>Loading skills...</li>
+      </ul>
+
+      <h2>Achievements</h2>
+      <ul id="achievements-list">
+        <li>Loading achievements...</li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <div class="section" id="profile-section">
+        <h2>Profile</h2>
+        <p id="profile">Passionate developer with 3+ years of experience...</p>
+      </div>
+
+      <div class="section" id="experience-section">
+        <h2>Work Experience</h2>
+        <ul id="experience-list">
+          <li>
+            <span class="item-title">Software Engineer - ABC Corp</span>
+            <span class="item-details">2020 - Present · Developed enterprise web apps</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="section" id="projects-section">
+        <h2>Projects</h2>
+        <ul id="projects-list">
+          <li>
+            <span class="item-title">Portfolio Website</span>
+            <span class="item-details">Responsive personal portfolio site</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="section" id="education-section">
+        <h2>Education</h2>
+        <ul id="education-list">
+          <li>
+            <span class="item-title">B.Tech in Computer Science</span>
+            <span class="item-details">XYZ University · 2016 - 2020</span>
+          </li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Utility function to check if a value is meaningful
+    function isNotEmpty(value) {
+        return value !== null && value !== undefined && String(value).trim() !== '';
+    }
+
+    // Utility function to convert a string (like "A, B, C") into an array of trimmed, non-empty values
+    function parseListString(str) {
+        if (!isNotEmpty(str)) return [];
+        return String(str).split(/[,;\n]/).map(s => s.trim()).filter(isNotEmpty);
+    }
+    
+    // Main function to load and render all resume data
+    function loadResumeData() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+
+        console.log('Loaded data from localStorage:', storedData);
+
+        // --- 1. Personal Data (Single Values) ---
+        const fname = storedData.fname || 'John';
+        const lname = storedData.lname || 'Doe';
+        document.getElementById('name').textContent = `${fname} ${lname}`;
+        
+        document.getElementById('title').textContent = storedData.title || 'Job Title / Aspiration';
+
+        // Contact Info
+        document.getElementById('email').textContent = storedData.email || 'email@example.com';
+        document.getElementById('email').href = `mailto:${storedData.email || '#'}`;
+        document.getElementById('phone').textContent = storedData.phone || 'Phone Number';
+        document.getElementById('address').textContent = storedData.address || 'City, State';
+
+        // Social Links (optional check for existence)
+        const linkedinEl = document.getElementById('linkedin');
+        const githubEl = document.getElementById('github');
+
+        if (isNotEmpty(storedData.linkedin)) {
+            linkedinEl.textContent = storedData.linkedin.replace(/^(https?:\/\/)?(www\.)?(linkedin\.com\/in\/)?/i, '');
+            linkedinEl.href = storedData.linkedin.startsWith('http') ? storedData.linkedin : `https://${storedData.linkedin}`;
+        } else {
+            document.getElementById('linkedin-display').style.display = 'none';
+        }
+
+        if (isNotEmpty(storedData.github)) {
+            githubEl.textContent = storedData.github.replace(/^(https?:\/\/)?(www\.)?(github\.com\/)?/i, '');
+            githubEl.href = storedData.github.startsWith('http') ? storedData.github : `https://${storedData.github}`;
+        } else {
+            document.getElementById('github-display').style.display = 'none';
+        }
+        
+        // Profile Summary
+        const profileSummary = storedData.summary || storedData.profile || 'Passionate professional looking for new challenges...';
+        document.getElementById('profile').textContent = profileSummary;
+        
+        if (!isNotEmpty(profileSummary)) {
+             document.getElementById('profile-section').style.display = 'none';
+        }
+
+
+        // --- 2. Skills (from comma-separated string) ---
+        const skillsList = document.getElementById('skills-list');
+        skillsList.innerHTML = '';
+        const skillsArray = parseListString(storedData.skills);
+        
+        if (skillsArray.length > 0) {
+            skillsArray.forEach(skill => {
+                skillsList.innerHTML += `<li>${skill}</li>`;
+            });
+        } else {
+            skillsList.innerHTML = '<li>No skills added yet.</li>';
+        }
+        
+        // --- 3. Experience (Multiple Experience Entries) ---
+        const expList = document.getElementById('experience-list');
+        expList.innerHTML = '';
+        const expSection = document.getElementById('experience-section');
+
+        // Check if we have multiple experiences or single experience
+        if (storedData.experiences && Array.isArray(storedData.experiences)) {
+            // Multiple experiences
+            if (storedData.experiences.length > 0) {
+                storedData.experiences.forEach(exp => {
+                    const endDate = exp.current === true ? 'Present' : (exp.end || '');
+                    const duration = isNotEmpty(exp.start) ? `${exp.start} - ${endDate}` : '';
+                    const details = `${duration}${exp.description ? ` · ${exp.description}` : ''}`;
+                    
+                    expList.innerHTML += `
+                        <li>
+                            <span class="item-title">${exp.title || 'Job Title'} at ${exp.company || 'Company'}</span>
+                            <span class="item-details">${details}</span>
+                        </li>
+                    `;
+                });
+            } else {
+                expSection.style.display = 'none'; // Hide section if no data
+            }
+        } else {
+            // Single experience (legacy format)
+            const jobTitle = storedData.title || '';
+            const company = storedData.company || '';
+            const startDate = storedData.start || '';
+            const endDate = storedData.end || '';
+            const description = storedData.description || '';
+            
+            if (isNotEmpty(jobTitle) && isNotEmpty(company)) {
+                const duration = isNotEmpty(startDate) ? `${startDate} - ${endDate}` : '';
+                const details = `${duration}${description ? ` · ${description}` : ''}`;
+                
+                expList.innerHTML += `
+                    <li>
+                        <span class="item-title">${jobTitle} at ${company}</span>
+                        <span class="item-details">${details}</span>
+                    </li>
+                `;
+            } else {
+                expSection.style.display = 'none'; // Hide section if no data
+            }
+        }
+
+        // --- 4. Education (Multiple Education Entries) ---
+        const eduList = document.getElementById('education-list');
+        eduList.innerHTML = '';
+        const eduSection = document.getElementById('education-section');
+
+        if (storedData.educations && Array.isArray(storedData.educations)) {
+            // Multiple education entries
+            if (storedData.educations.length > 0) {
+                storedData.educations.forEach(edu => {
+                    const gpa = edu.gpa ? ` (GPA: ${edu.gpa})` : '';
+                    const details = `${edu.school || 'School'}, ${edu.location || 'Location'} · ${edu['grad-date'] || 'Graduation Year'}${gpa}`;
+
+                    eduList.innerHTML += `
+                        <li>
+                            <span class="item-title">${edu.degree || 'Degree'}</span>
+                            <span class="item-details">${details}</span>
+                        </li>
+                    `;
+                });
+            } else {
+                eduSection.style.display = 'none'; // Hide section if no data
+            }
+        } else {
+            // Single education (legacy format)
+            const degree = storedData.degree || '';
+            const school = storedData.school || '';
+            const gradDate = storedData['grad-date'] || ''; 
+            const location = storedData.location || '';
+            const gpa = storedData.gpa ? ` (GPA: ${storedData.gpa})` : '';
+
+            if (isNotEmpty(degree) && isNotEmpty(school)) {
+                const details = `${school}, ${location} · ${gradDate}${gpa}`;
+
+                eduList.innerHTML += `
+                    <li>
+                        <span class="item-title">${degree}</span>
+                        <span class="item-details">${details}</span>
+                    </li>
+                `;
+            } else {
+                eduSection.style.display = 'none'; // Hide section if no data
+            }
+        }
+
+        // --- 5. Projects (Multiple Project Entries) ---
+        const projList = document.getElementById('projects-list');
+        const projSection = document.getElementById('projects-section');
+        projList.innerHTML = '';
+        
+        if (storedData.projects && Array.isArray(storedData.projects)) {
+            if (storedData.projects.length > 0) {
+                storedData.projects.forEach(project => {
+                    const details = `${project.description || 'Project details'}${project.technologies ? ` · Technologies: ${project.technologies}` : ''}`;
+                    
+                    projList.innerHTML += `
+                        <li>
+                            <span class="item-title">${project.name || 'Project Name'}</span>
+                            <span class="item-details">${details}</span>
+                        </li>
+                    `;
+                });
+            } else {
+                projSection.style.display = 'none'; // Hide section if no data
+            }
+        } else {
+            // Fallback to simple string format
+            const projectItems = parseListString(storedData.projects); 
+            
+            if (projectItems.length > 0) {
+                projectItems.forEach(item => {
+                    // Attempt to split title and description if a colon or dash is used
+                    let title = item;
+                    let desc = 'Details not provided.';
+
+                    const separatorIndex = item.indexOf(':') > 0 ? item.indexOf(':') : item.indexOf('—');
+                    
+                    if (separatorIndex > 0) {
+                        title = item.substring(0, separatorIndex).trim();
+                        desc = item.substring(separatorIndex + 1).trim();
+                    }
+
+                    projList.innerHTML += `
+                        <li>
+                            <span class="item-title">${title}</span>
+                            <span class="item-details">${desc}</span>
+                        </li>
+                    `;
+                });
+            } else {
+                projSection.style.display = 'none'; // Hide section if no data
+            }
+        }
+
+        // --- 6. Achievements (from comma-separated string, using generic 'achievements' key) ---
+        const achList = document.getElementById('achievements-list');
+        achList.innerHTML = '';
+        
+        const achievementItems = parseListString(storedData.achievements);
+        
+        if (achievementItems.length > 0) {
+            achievementItems.forEach(item => {
+                achList.innerHTML += `<li>${item}</li>`;
+            });
+        } else {
+            // If no achievements, hide the section header
+            const achHeader = achList.previousElementSibling;
+            if (achHeader && achHeader.tagName === 'H2') {
+                achHeader.style.display = 'none';
+            }
+        }
+    }
+
+    // --- PDF Download Function ---
+    function downloadPDF() {
+      const element = document.querySelector('.container');
+      const loadingIndicator = document.getElementById('pdfLoading');
+      
+      // Show loading indicator
+      loadingIndicator.classList.add('show');
+      
+      // Get user name for filename
+      const userName = document.getElementById('name').textContent || 'resume';
+      const fileName = `${userName.replace(/\s+/g, '_')}_resume.pdf`;
+      
+      // Options for PDF generation
+      const options = {
+        margin: 10,
+        filename: fileName,
+        image: { 
+          type: 'jpeg', 
+          quality: 0.98 
+        },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait' 
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'] 
+        }
+      };
+
+      // Generate and download PDF
+      html2pdf()
+        .set(options)
+        .from(element)
+        .save()
+        .then(() => {
+          // Hide loading indicator when done
+          loadingIndicator.classList.remove('show');
+        })
+        .catch((error) => {
+          console.error('PDF generation failed:', error);
+          loadingIndicator.classList.remove('show');
+          alert('Failed to generate PDF. Please try again.');
+        });
+    }
+
+    // Load data when the page is fully loaded
+    window.addEventListener('load', loadResumeData);
+  </script>
+</body>
+</html>
