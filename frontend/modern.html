@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Template 2 - Modern Sidebar</title>
+  <!-- Add html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f3f3;
+    }
+    .resume {
+      display: flex;
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 35%; /* Increased width for better content display */
+      background: #2c3e50; /* Deep blue/grey */
+      color: #ecf0f1;
+      padding: 25px;
+      box-sizing: border-box;
+    }
+    .sidebar h2 {
+      margin-top: 25px;
+      font-size: 18px;
+      border-bottom: 2px solid #3498db; /* Blue accent line */
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #f1c40f; /* Yellow accent color for headings */
+    }
+    .sidebar p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .sidebar a {
+        color: #ecf0f1;
+        text-decoration: none;
+    }
+    .main {
+      width: 65%;
+      padding: 25px;
+      box-sizing: border-box;
+    }
+    .main h2 {
+      margin-top: 25px;
+      color: #2c3e50;
+      border-bottom: 2px solid #2c3e50;
+      padding-bottom: 5px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .main h2:first-of-type {
+        margin-top: 0;
+    }
+    .main p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+    .job, .edu, .project {
+      margin-bottom: 20px;
+      padding-left: 10px;
+      border-left: 3px solid #3498db;
+    }
+    .job p, .edu p, .project p {
+        margin: 2px 0;
+    }
+    .job strong, .edu strong, .project strong {
+        font-size: 15px;
+        color: #34495e;
+    }
+    .job .duration, .edu .year, .project .duration {
+        font-style: italic;
+        color: #7f8c8d;
+        font-size: 13px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    /* Styling for skill list */
+    .skill-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .skill-list li {
+      background: #34495e;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+    
+    /* Download button styling */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+      transition: background 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .download-btn:hover {
+      background: #34495e;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Print styles for better PDF output */
+    @media print {
+      .download-btn {
+        display: none;
+      }
+      body {
+        background: white !important;
+        margin: 0;
+        padding: 0;
+      }
+      .resume {
+        box-shadow: none !important;
+        margin: 0 !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+      }
+    }
+    
+    /* Loading indicator for PDF generation */
+    .pdf-loading {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .pdf-loading.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <!-- Download Button -->
+  <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
+  
+  <!-- PDF Loading Indicator -->
+  <div class="pdf-loading" id="pdfLoading">
+    <div>Generating PDF... Please wait</div>
+  </div>
+  
+  <div class="resume" id="resume-content">
+    <div class="sidebar">
+      <h1 style="font-size: 28px; margin-bottom: 5px; color: #fff;" id="full-name">Your Full Name</h1>
+      <p style="font-size: 16px; margin-bottom: 15px; color: #bdc3c7;" id="job-title">Job Title / Aspirant</p>
+
+      <h2>Contact</h2>
+      <p><a href="mailto:" id="email">email@example.com</a></p>
+      <p id="phone">Phone Number</p>
+      <p id="address">City, State</p>
+      <!-- Optional Socials can be added here -->
+
+      <h2>Skills</h2>
+      <ul class="skill-list" id="skills-container">
+        <li>Loading skills...</li>
+      </ul>
+
+      <h2>Languages</h2>
+      <p id="languages">English, Hindi, Marathi</p>
+    </div>
+
+    <div class="main">
+      <h2>Profile Summary</h2>
+      <p id="summary">
+        Your professional summary will appear here. This section is crucial for immediately hooking the reader with your key strengths and career goals.
+      </p>
+
+      <h2>Experience</h2>
+      <div id="experience-container">
+        <div class="job">
+          <p><strong>Job Title</strong> at <span>Company Name</span></p>
+          <span class="duration">Start Date - End Date</span>
+          <p>Description of duties and key accomplishments (e.g., Managed a team of 5; Increased efficiency by 20%).</p>
+        </div>
+      </div>
+      
+      <h2>Education</h2>
+      <div id="education-container">
+        <div class="edu">
+          <p><strong>Degree/Certification Name</strong></p>
+          <p class="year">Graduation Year</p>
+          <p>School/University Name, Location</p>
+        </div>
+      </div>
+      
+      <h2>Projects</h2>
+      <div id="projects-container">
+        <div class="project">
+          <p><strong>Project Name</strong></p>
+          <span class="duration">Project Duration</span>
+          <p>Project description and key achievements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Utility Function ---
+    function isNotEmpty(value) {
+        return value !== null && value !== undefined && String(value).trim() !== '';
+    }
+
+    // --- Main Data Loading Function ---
+    function loadResumeData() {
+        const storedData = JSON.parse(localStorage.getItem('resumeData')) || {};
+        
+        console.log('Loaded data from localStorage:', storedData);
+        
+        // 1. Personal & Summary Data
+        const fname = storedData.fname || 'Your First Name';
+        const lname = storedData.lname || 'Your Last Name';
+        document.getElementById('full-name').textContent = `${fname} ${lname}`;
+        document.getElementById('email').textContent = storedData.email || 'email@example.com';
+        document.getElementById('email').href = `mailto:${storedData.email || 'email@example.com'}`;
+        document.getElementById('phone').textContent = storedData.phone || 'Phone Number';
+        document.getElementById('address').textContent = storedData.address || 'City, State';
+        document.getElementById('summary').textContent = storedData.summary || 'Your professional summary will appear here.';
+        
+        // Use a placeholder for job title if the form data doesn't provide one directly
+        document.getElementById('job-title').textContent = storedData.title || 'Job Title / Aspirant';
+
+        // 2. Skills
+        const skillsContainer = document.getElementById('skills-container');
+        skillsContainer.innerHTML = '';
+        const rawSkills = storedData.skills || '';
+        
+        if (isNotEmpty(rawSkills)) {
+            // Split by comma, new line, or semicolon, then trim and filter empty strings
+            const skillsArray = rawSkills.split(/[,;\n]/).map(s => s.trim()).filter(isNotEmpty);
+            
+            if (skillsArray.length > 0) {
+                skillsArray.forEach(skill => {
+                    const li = document.createElement('li');
+                    li.textContent = skill;
+                    skillsContainer.appendChild(li);
+                });
+            } else {
+                skillsContainer.innerHTML = '<li>No skills added yet.</li>';
+            }
+        } else {
+             skillsContainer.innerHTML = '<li>No skills added yet.</li>';
+        }
+
+        // 3. Experience - Handle multiple experiences
+        const expContainer = document.getElementById('experience-container');
+        expContainer.innerHTML = '';
+        
+        // Check if we have multiple experiences or single experience
+        if (storedData.experiences && Array.isArray(storedData.experiences)) {
+            // Multiple experiences
+            if (storedData.experiences.length > 0) {
+                storedData.experiences.forEach(exp => {
+                    const jobDiv = document.createElement('div');
+                    jobDiv.className = 'job';
+                    
+                    const endDate = exp.current === true ? 'Present' : (exp.end || '');
+                    
+                    jobDiv.innerHTML = `
+                        <p><strong>${exp.title || 'Job Title'}</strong> at <span>${exp.company || 'Company Name'}</span></p>
+                        <span class="duration">${exp.start || 'Start Date'} - ${endDate}</span>
+                        <p>${exp.location ? `<strong>Location:</strong> ${exp.location}<br>` : ''}${exp.description || 'Description of duties and key accomplishments.'}</p>
+                    `;
+                    expContainer.appendChild(jobDiv);
+                });
+            } else {
+                expContainer.innerHTML = '<div class="job"><p><strong>No work experience added yet.</strong></p></div>';
+            }
+        } else {
+            // Single experience (legacy format)
+            const jobTitle = storedData.title || '';
+            const company = storedData.company || '';
+            const startDate = storedData.start || '';
+            const endDate = storedData.end || '';
+            const description = storedData.description || '';
+            const location = storedData.location || '';
+            
+            if (isNotEmpty(jobTitle) && isNotEmpty(company)) {
+                const jobDiv = document.createElement('div');
+                jobDiv.className = 'job';
+                
+                jobDiv.innerHTML = `
+                    <p><strong>${jobTitle}</strong> at <span>${company}</span></p>
+                    <span class="duration">${startDate} - ${endDate}</span>
+                    <p>${location ? `<strong>Location:</strong> ${location}<br>` : ''}${description}</p>
+                `;
+                expContainer.appendChild(jobDiv);
+            } else {
+                expContainer.innerHTML = '<div class="job"><p><strong>No work experience added yet.</strong></p></div>';
+            }
+        }
+
+        // 4. Education - Handle multiple education entries
+        const eduContainer = document.getElementById('education-container');
+        eduContainer.innerHTML = '';
+
+        if (storedData.educations && Array.isArray(storedData.educations)) {
+            // Multiple education entries
+            if (storedData.educations.length > 0) {
+                storedData.educations.forEach(edu => {
+                    const eduDiv = document.createElement('div');
+                    eduDiv.className = 'edu';
+                    const gpa = edu.gpa ? ` (GPA: ${edu.gpa})` : '';
+                    
+                    eduDiv.innerHTML = `
+                        <p><strong>${edu.degree || 'Degree/Certification Name'}</strong>${gpa}</p>
+                        <p class="year">${edu['grad-date'] || 'Graduation Year'}</p>
+                        <p>${edu.school || 'School/University Name'}, ${edu.location || 'Location'}</p>
+                    `;
+                    eduContainer.appendChild(eduDiv);
+                });
+            } else {
+                eduContainer.innerHTML = '<div class="edu"><p><strong>No education added yet.</strong></p></div>';
+            }
+        } else {
+            // Single education (legacy format)
+            const degree = storedData.degree || '';
+            const school = storedData.school || '';
+            const gradDate = storedData['grad-date'] || ''; 
+            const location = storedData.location || '';
+            const gpa = storedData.gpa ? ` (GPA: ${storedData.gpa})` : '';
+
+            if (isNotEmpty(degree) && isNotEmpty(school)) {
+                const eduDiv = document.createElement('div');
+                eduDiv.className = 'edu';
+                
+                eduDiv.innerHTML = `
+                    <p><strong>${degree}</strong>${gpa}</p>
+                    <p class="year">${gradDate}</p>
+                    <p>${school}, ${location}</p>
+                `;
+                eduContainer.appendChild(eduDiv);
+            } else {
+                eduContainer.innerHTML = '<div class="edu"><p><strong>No education added yet.</strong></p></div>';
+            }
+        }
+
+        // 5. Projects - Handle multiple projects
+        const projectsContainer = document.getElementById('projects-container');
+        projectsContainer.innerHTML = '';
+
+        if (storedData.projects && Array.isArray(storedData.projects)) {
+            if (storedData.projects.length > 0) {
+                storedData.projects.forEach(project => {
+                    const projectDiv = document.createElement('div');
+                    projectDiv.className = 'project';
+                    
+                    projectDiv.innerHTML = `
+                        <p><strong>${project.name || 'Project Name'}</strong></p>
+                        <span class="duration">${project.duration || 'Project Duration'}</span>
+                        <p>${project.description || 'Project description and key achievements.'}</p>
+                        ${project.technologies ? `<p><strong>Technologies:</strong> ${project.technologies}</p>` : ''}
+                        ${project.link ? `<p><strong>Link:</strong> <a href="${project.link}" target="_blank">${project.link}</a></p>` : ''}
+                    `;
+                    projectsContainer.appendChild(projectDiv);
+                });
+            } else {
+                projectsContainer.innerHTML = '<div class="project"><p><strong>No projects added yet.</strong></p></div>';
+            }
+        } else {
+            projectsContainer.innerHTML = '<div class="project"><p><strong>No projects added yet.</strong></p></div>';
+        }
+
+        // 6. Languages
+        const languagesElement = document.getElementById('languages');
+        if (storedData.languages && isNotEmpty(storedData.languages)) {
+            languagesElement.textContent = storedData.languages;
+        } else {
+            languagesElement.textContent = 'English, Hindi, Marathi';
+        }
+    }
+
+    // --- PDF Download Function ---
+    function downloadPDF() {
+      const element = document.getElementById('resume-content');
+      const loadingIndicator = document.getElementById('pdfLoading');
+      
+      // Show loading indicator
+      loadingIndicator.classList.add('show');
+      
+      // Get user name for filename
+      const userName = document.getElementById('full-name').textContent || 'resume';
+      const fileName = `${userName.replace(/\s+/g, '_')}_resume.pdf`;
+      
+      // Options for PDF generation
+      const options = {
+        margin: 10,
+        filename: fileName,
+        image: { 
+          type: 'jpeg', 
+          quality: 0.98 
+        },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait' 
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'] 
+        }
+      };
+
+      // Generate and download PDF
+      html2pdf()
+        .set(options)
+        .from(element)
+        .save()
+        .then(() => {
+          // Hide loading indicator when done
+          loadingIndicator.classList.remove('show');
+        })
+        .catch((error) => {
+          console.error('PDF generation failed:', error);
+          loadingIndicator.classList.remove('show');
+          alert('Failed to generate PDF. Please try again.');
+        });
+    }
+
+    // Load data when the page is fully loaded
+    window.addEventListener('load', loadResumeData);
+  </script>
+</body>
+</html>
